@@ -1,0 +1,26 @@
+.container {
+    overflow: hidden;
+    min-height: 50px;
+}
+
+.leftContent {
+    min-height: 1px;
+    float: left;
+    overflow: hidden;
+    width: 150px;
+}
+
+.item {
+    border: 2px solid black;
+    padding: 20px;
+    white-space: nowrap;
+    float: left;
+}
+
+
+.rightContent {
+    min-height: 50px;
+    float: none;
+    border: 1px solid red;
+    overflow: hidden;
+}

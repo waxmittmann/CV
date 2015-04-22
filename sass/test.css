@@ -1,0 +1,27 @@
+/* line 1, /Users/max/Workspaces/Html/CVDraft/sass/test.scss */
+.container {
+  overflow: hidden;
+  min-height: 50px; }
+
+/* line 6, /Users/max/Workspaces/Html/CVDraft/sass/test.scss */
+.leftContent {
+  min-height: 1px;
+  float: left;
+  overflow: hidden;
+  width: 150px; }
+
+/* line 13, /Users/max/Workspaces/Html/CVDraft/sass/test.scss */
+.item {
+  border: 2px solid black;
+  padding: 20px;
+  white-space: nowrap;
+  float: left; }
+
+/* line 21, /Users/max/Workspaces/Html/CVDraft/sass/test.scss */
+.rightContent {
+  min-height: 50px;
+  float: none;
+  border: 1px solid red;
+  overflow: hidden; }
+
+/*# sourceMappingURL=test.css.map */

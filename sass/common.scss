@@ -1,0 +1,137 @@
+$background-light-blue: #EBEBFF;
+
+.a { 
+    font-size: 200%;
+    .b { 
+        font-size: 150%;
+        .c { 
+            font-size: 120%;
+        }
+    }
+}
+
+.main { 
+    margin: 10px auto;
+//    margin-left: auto;
+    max-width: 800px;
+//    border: 3px solid black;
+//    border-left: 3px solid black;
+//    border-right: 1px solid black;
+//    background-color: #FBFEFF;
+    
+    .header { 
+        background-color: green;
+        color: white;
+    }
+}
+
+.positionTitle {
+    
+}
+
+.academicTitles {
+    color: mediumblue;
+    font-weight: bolder;
+}
+
+.academicTitle {
+    margin-bottom: 5px;
+    padding-left: 26px;
+}
+
+.pageHeader {
+    margin-bottom: 10px;
+    font-size: 300%;
+    font-weight: 100;
+}
+
+.aboutMeBlurb {
+    border-bottom: black solid 1px;
+    border-top: black solid 1px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    background: #EBEBFF;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.contactMe {
+    margin-left: 20px;
+    font-size: 90%;
+    margin-bottom: 40px;
+}
+
+.sectionTitle {
+    font-size: 120%;
+    color: darkblue;
+}
+
+.mainSubSectionItem { 
+    overflow: hidden;
+    .sectionTitle { 
+        font-size: 100%;
+        margin-top: 10px;
+        font-style: italic;
+    }
+}
+
+.skillsSection {
+    .sectionTitle { 
+//        display: inline-block;
+        width: 160px;    
+        display: block;
+        float: left; 
+        overflow: hidden; 
+        min-height: 1px;
+    }
+    
+    .skillsPanel { 
+        display: block; 
+        float: none; 
+        min-height: 1px; 
+        overflow: hidden   
+    }
+    
+    .mainSectionDescription {
+        height: 50px;
+    }
+}
+
+.dateSpan {
+    font-size: 120%;
+    color: dodgerblue;
+}
+
+.sectionDescription {
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 7px
+}
+
+.footer {
+    margin-top: 20px;
+    font-size: 90%
+}
+
+.mainSectionItem {
+    margin-bottom: 20px
+}
+
+body {
+    padding: 30px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.asInlineBlock {
+    display: inline-block;
+    width: 160px;
+}
+
+.skill {
+    display: inline-block;
+    border: 2px solid black;
+    background-color: $background-light-blue;
+    padding: 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+}
