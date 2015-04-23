@@ -1,13 +1,11 @@
 $background-light-blue: #EBEBFF;
+$resize-for-smaller-devices: 590px;
 
 .main { 
-    margin: 10px auto;
-    max-width: 800px;
-    
-    .header { 
-        background-color: green;
-        color: white;
+    @media(min-width: 800px) {
+        margin: 10px auto;
     }
+    max-width: 800px;    
 }
 
 .academicTitles {
@@ -16,13 +14,16 @@ $background-light-blue: #EBEBFF;
     
     .academicTitle {
         margin-bottom: 5px;
-        padding-left: 26px;
+//        padding-left: 26px;
     }
 }
 
 .pageHeader {
     margin-bottom: 10px;
-    font-size: 300%;
+    font-size: 300%;    
+    @media(max-width: $resize-for-smaller-devices) {
+        font-size: 220%;
+    }
     font-weight: 100;
 }
 
@@ -32,8 +33,12 @@ $background-light-blue: #EBEBFF;
     margin-top: 15px;
     margin-bottom: 15px;
     background: #EBEBFF;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    @media(min-width: $resize-for-smaller-devices) {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 }
 
 .contactMe {
@@ -43,17 +48,39 @@ $background-light-blue: #EBEBFF;
 }
 
 .mainSection { 
+    .dateSpan {
+        font-size: 120%;
+        color: dodgerblue;
+
+        @media(max-width: $resize-for-smaller-devices) {
+            background-color: darkblue;
+            padding: 10px;
+            margin: 0px;
+            color: white;
+            border-radius: 2px;
+        }
+    }
+
     .sectionTitle {
         font-size: 120%;
         color: darkblue;
+        @media(max-width: $resize-for-smaller-devices) {
+            padding-left: 5px;
+            padding-right: 5px;            
+        }
     }
 
     .mainSectionItem {
         margin-bottom: 20px;
             
         .sectionDescription {
-            padding-left: 20px;
-            padding-right: 20px;
+            padding-left: 5px;
+            padding-right: 5px;
+            
+            @media(min-width: $resize-for-smaller-devices) {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
             margin-top: 7px;
             
             .mainSubSectionItem {      
@@ -61,29 +88,49 @@ $background-light-blue: #EBEBFF;
                     font-size: 100%;
                     margin-top: 10px;
                     font-style: italic;
+                    
+                    @media(max-width: $resize-for-smaller-devices) {
+                        &:before { 
+                            content: "> ";
+                        }
+                    }
                 }
             }    
         }
     }
 }
                         
-@media(min-width: 590px) {
-    .skillsSection { 
-        .mainSubSectionItem { 
-            overflow: hidden;
-            min-height: 50px;
-            margin-left: 10px;
+.skillsSection { 
+    .mainSubSectionItem { 
+        overflow: hidden;
+        min-height: 50px;
+        margin-left: 10px;
 
+        .sectionTitle { 
+            font-style: italic;
+            font-size: 110%;
+        }
+
+        .skillsPanel { 
+            margin-top: 0px;
+            .skill { 
+            }
+        }
+
+        @media(min-width: $resize-for-smaller-devices) {
             .sectionTitle { 
                 min-height: 1px;
                 float: left;
                 overflow: hidden;
                 width: 150px;
-                font-style: italic;
-                font-size: 110%;
             }
-
+            
             .skillsPanel { 
+                padding-left: 0px;
+                margin-left: 0px;
+                padding-top: 0px;
+                margin-top: 0px;
+
                 min-height: 50px; 
                 float: none;
                 overflow: hidden;   
@@ -98,13 +145,8 @@ $background-light-blue: #EBEBFF;
                     margin-bottom: 2px;
                 }
             }
-        }    
-    }
-}
-
-.dateSpan {
-    font-size: 120%;
-    color: dodgerblue;
+        }
+    }    
 }
 
 .footer {
@@ -114,5 +156,8 @@ $background-light-blue: #EBEBFF;
 
 body {
     padding: 30px;
+    @media(max-width: $resize-for-smaller-devices) {
+        padding: 8px;
+    }
     font-family: 'Open Sans', sans-serif;
 }

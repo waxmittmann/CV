@@ -1,81 +1,117 @@
-/* line 3, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+/* line 4, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 .main {
-  margin: 10px auto;
   max-width: 800px; }
-  /* line 7, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
-  .main .header {
-    background-color: green;
-    color: white; }
+  @media (min-width: 800px) {
+    .main {
+      margin: 10px auto; } }
 
-/* line 13, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+/* line 11, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 .academicTitles {
   color: mediumblue;
   font-weight: bolder; }
-  /* line 17, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+  /* line 15, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
   .academicTitles .academicTitle {
-    margin-bottom: 5px;
-    padding-left: 26px; }
+    margin-bottom: 5px; }
 
-/* line 23, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+/* line 21, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 .pageHeader {
   margin-bottom: 10px;
   font-size: 300%;
   font-weight: 100; }
+  @media (max-width: 590px) {
+    .pageHeader {
+      font-size: 220%; } }
 
-/* line 29, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+/* line 30, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 .aboutMeBlurb {
   border-bottom: black solid 1px;
   border-top: black solid 1px;
   margin-top: 15px;
   margin-bottom: 15px;
   background: #EBEBFF;
-  padding-left: 20px;
-  padding-right: 20px; }
+  padding-left: 5px;
+  padding-right: 5px; }
+  @media (min-width: 590px) {
+    .aboutMeBlurb {
+      padding-left: 20px;
+      padding-right: 20px; } }
 
-/* line 39, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+/* line 44, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 .contactMe {
   margin-left: 20px;
   font-size: 90%;
   margin-bottom: 40px; }
 
-/* line 46, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+/* line 51, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+.mainSection .dateSpan {
+  font-size: 120%;
+  color: dodgerblue; }
+  @media (max-width: 590px) {
+    .mainSection .dateSpan {
+      background-color: darkblue;
+      padding: 10px;
+      margin: 0px;
+      color: white;
+      border-radius: 2px; } }
+/* line 64, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 .mainSection .sectionTitle {
   font-size: 120%;
   color: darkblue; }
-/* line 51, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+  @media (max-width: 590px) {
+    .mainSection .sectionTitle {
+      padding-left: 5px;
+      padding-right: 5px; } }
+/* line 73, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 .mainSection .mainSectionItem {
   margin-bottom: 20px; }
-  /* line 54, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+  /* line 76, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
   .mainSection .mainSectionItem .sectionDescription {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
     margin-top: 7px; }
-    /* line 60, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+    @media (min-width: 590px) {
+      .mainSection .mainSectionItem .sectionDescription {
+        padding-left: 20px;
+        padding-right: 20px; } }
+    /* line 87, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
     .mainSection .mainSectionItem .sectionDescription .mainSubSectionItem .sectionTitle {
       font-size: 100%;
       margin-top: 10px;
       font-style: italic; }
+      @media (max-width: 590px) {
+        /* line 93, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+        .mainSection .mainSectionItem .sectionDescription .mainSubSectionItem .sectionTitle:before {
+          content: "> "; } }
 
-@media (min-width: 590px) {
-  /* line 72, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
-  .skillsSection .mainSubSectionItem {
-    overflow: hidden;
-    min-height: 50px;
-    margin-left: 10px; }
-    /* line 77, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+/* line 104, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+.skillsSection .mainSubSectionItem {
+  overflow: hidden;
+  min-height: 50px;
+  margin-left: 10px; }
+  /* line 109, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+  .skillsSection .mainSubSectionItem .sectionTitle {
+    font-style: italic;
+    font-size: 110%; }
+  /* line 114, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+  .skillsSection .mainSubSectionItem .skillsPanel {
+    margin-top: 0px; }
+  @media (min-width: 590px) {
+    /* line 121, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
     .skillsSection .mainSubSectionItem .sectionTitle {
       min-height: 1px;
       float: left;
       overflow: hidden;
-      width: 150px;
-      font-style: italic;
-      font-size: 110%; }
-    /* line 86, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+      width: 150px; }
+    /* line 128, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
     .skillsSection .mainSubSectionItem .skillsPanel {
+      padding-left: 0px;
+      margin-left: 0px;
+      padding-top: 0px;
+      margin-top: 0px;
       min-height: 50px;
       float: none;
       overflow: hidden; }
-      /* line 90, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+      /* line 137, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
       .skillsSection .mainSubSectionItem .skillsPanel .skill {
         border: 2px solid black;
         background-color: #EBEBFF;
@@ -86,19 +122,17 @@
         margin-left: 5px;
         margin-bottom: 2px; } }
 
-/* line 105, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
-.dateSpan {
-  font-size: 120%;
-  color: dodgerblue; }
-
-/* line 110, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+/* line 152, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 .footer {
   margin-top: 20px;
   font-size: 90%; }
 
-/* line 115, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+/* line 157, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 body {
   padding: 30px;
   font-family: 'Open Sans', sans-serif; }
+  @media (max-width: 590px) {
+    body {
+      padding: 8px; } }
 
 /*# sourceMappingURL=common.css.map */
