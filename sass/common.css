@@ -1,39 +1,28 @@
 /* line 3, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
-.a {
-  font-size: 200%; }
-  /* line 5, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
-  .a .b {
-    font-size: 150%; }
-    /* line 7, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
-    .a .b .c {
-      font-size: 120%; }
-
-/* line 13, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 .main {
   margin: 10px auto;
   max-width: 800px; }
-  /* line 22, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+  /* line 7, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
   .main .header {
     background-color: green;
     color: white; }
 
-/* line 32, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+/* line 13, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 .academicTitles {
   color: mediumblue;
   font-weight: bolder; }
+  /* line 17, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+  .academicTitles .academicTitle {
+    margin-bottom: 5px;
+    padding-left: 26px; }
 
-/* line 37, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
-.academicTitle {
-  margin-bottom: 5px;
-  padding-left: 26px; }
-
-/* line 42, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+/* line 23, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 .pageHeader {
   margin-bottom: 10px;
   font-size: 300%;
   font-weight: 100; }
 
-/* line 48, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+/* line 29, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 .aboutMeBlurb {
   border-bottom: black solid 1px;
   border-top: black solid 1px;
@@ -43,80 +32,73 @@
   padding-left: 20px;
   padding-right: 20px; }
 
-/* line 58, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+/* line 39, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 .contactMe {
   margin-left: 20px;
   font-size: 90%;
   margin-bottom: 40px; }
 
-/* line 64, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
-.sectionTitle {
+/* line 46, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+.mainSection .sectionTitle {
   font-size: 120%;
   color: darkblue; }
+/* line 51, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+.mainSection .mainSectionItem {
+  margin-bottom: 20px; }
+  /* line 54, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+  .mainSection .mainSectionItem .sectionDescription {
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 7px; }
+    /* line 60, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+    .mainSection .mainSectionItem .sectionDescription .mainSubSectionItem .sectionTitle {
+      font-size: 100%;
+      margin-top: 10px;
+      font-style: italic; }
 
-/* line 69, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
-.mainSubSectionItem {
-  overflow: hidden; }
-  /* line 71, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
-  .mainSubSectionItem .sectionTitle {
-    font-size: 100%;
-    margin-top: 10px;
-    font-style: italic; }
+@media (min-width: 590px) {
+  /* line 72, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+  .skillsSection .mainSubSectionItem {
+    overflow: hidden;
+    min-height: 50px;
+    margin-left: 10px; }
+    /* line 77, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+    .skillsSection .mainSubSectionItem .sectionTitle {
+      min-height: 1px;
+      float: left;
+      overflow: hidden;
+      width: 150px;
+      font-style: italic;
+      font-size: 110%; }
+    /* line 86, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+    .skillsSection .mainSubSectionItem .skillsPanel {
+      min-height: 50px;
+      float: none;
+      overflow: hidden; }
+      /* line 90, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+      .skillsSection .mainSubSectionItem .skillsPanel .skill {
+        border: 2px solid black;
+        background-color: #EBEBFF;
+        white-space: nowrap;
+        float: left;
+        padding: 8px;
+        border-radius: 6px;
+        margin-left: 5px;
+        margin-bottom: 2px; } }
 
-/* line 79, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
-.skillsSection .sectionTitle {
-  width: 160px;
-  display: block;
-  float: left;
-  overflow: hidden;
-  min-height: 1px; }
-/* line 88, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
-.skillsSection .skillsPanel {
-  display: block;
-  float: none;
-  min-height: 1px;
-  overflow: hidden; }
-/* line 95, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
-.skillsSection .mainSectionDescription {
-  height: 50px; }
-
-/* line 100, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+/* line 105, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 .dateSpan {
   font-size: 120%;
   color: dodgerblue; }
 
-/* line 105, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
-.sectionDescription {
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-top: 7px; }
-
-/* line 111, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+/* line 110, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 .footer {
   margin-top: 20px;
   font-size: 90%; }
 
-/* line 116, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
-.mainSectionItem {
-  margin-bottom: 20px; }
-
-/* line 120, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+/* line 115, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 body {
   padding: 30px;
   font-family: 'Open Sans', sans-serif; }
-
-/* line 125, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
-.asInlineBlock {
-  display: inline-block;
-  width: 160px; }
-
-/* line 130, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
-.skill {
-  display: inline-block;
-  border: 2px solid black;
-  background-color: #EBEBFF;
-  padding: 8px;
-  border-radius: 6px;
-  white-space: nowrap; }
 
 /*# sourceMappingURL=common.css.map */

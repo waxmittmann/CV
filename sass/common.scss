@@ -1,23 +1,8 @@
 $background-light-blue: #EBEBFF;
 
-.a { 
-    font-size: 200%;
-    .b { 
-        font-size: 150%;
-        .c { 
-            font-size: 120%;
-        }
-    }
-}
-
 .main { 
     margin: 10px auto;
-//    margin-left: auto;
     max-width: 800px;
-//    border: 3px solid black;
-//    border-left: 3px solid black;
-//    border-right: 1px solid black;
-//    background-color: #FBFEFF;
     
     .header { 
         background-color: green;
@@ -25,18 +10,14 @@ $background-light-blue: #EBEBFF;
     }
 }
 
-.positionTitle {
-    
-}
-
 .academicTitles {
     color: mediumblue;
     font-weight: bolder;
-}
-
-.academicTitle {
-    margin-bottom: 5px;
-    padding-left: 26px;
+    
+    .academicTitle {
+        margin-bottom: 5px;
+        padding-left: 26px;
+    }
 }
 
 .pageHeader {
@@ -61,39 +42,63 @@ $background-light-blue: #EBEBFF;
     margin-bottom: 40px;
 }
 
-.sectionTitle {
-    font-size: 120%;
-    color: darkblue;
-}
+.mainSection { 
+    .sectionTitle {
+        font-size: 120%;
+        color: darkblue;
+    }
 
-.mainSubSectionItem { 
-    overflow: hidden;
-    .sectionTitle { 
-        font-size: 100%;
-        margin-top: 10px;
-        font-style: italic;
+    .mainSectionItem {
+        margin-bottom: 20px;
+            
+        .sectionDescription {
+            padding-left: 20px;
+            padding-right: 20px;
+            margin-top: 7px;
+            
+            .mainSubSectionItem {      
+                .sectionTitle { 
+                    font-size: 100%;
+                    margin-top: 10px;
+                    font-style: italic;
+                }
+            }    
+        }
     }
 }
+                        
+@media(min-width: 590px) {
+    .skillsSection { 
+        .mainSubSectionItem { 
+            overflow: hidden;
+            min-height: 50px;
+            margin-left: 10px;
 
-.skillsSection {
-    .sectionTitle { 
-//        display: inline-block;
-        width: 160px;    
-        display: block;
-        float: left; 
-        overflow: hidden; 
-        min-height: 1px;
-    }
-    
-    .skillsPanel { 
-        display: block; 
-        float: none; 
-        min-height: 1px; 
-        overflow: hidden   
-    }
-    
-    .mainSectionDescription {
-        height: 50px;
+            .sectionTitle { 
+                min-height: 1px;
+                float: left;
+                overflow: hidden;
+                width: 150px;
+                font-style: italic;
+                font-size: 110%;
+            }
+
+            .skillsPanel { 
+                min-height: 50px; 
+                float: none;
+                overflow: hidden;   
+                .skill { 
+                    border: 2px solid black;
+                    background-color: $background-light-blue;
+                    white-space: nowrap;
+                    float: left;
+                    padding: 8px;
+                    border-radius: 6px;
+                    margin-left: 5px; 
+                    margin-bottom: 2px;
+                }
+            }
+        }    
     }
 }
 
@@ -102,36 +107,12 @@ $background-light-blue: #EBEBFF;
     color: dodgerblue;
 }
 
-.sectionDescription {
-    padding-left: 20px;
-    padding-right: 20px;
-    margin-top: 7px
-}
-
 .footer {
     margin-top: 20px;
     font-size: 90%
 }
 
-.mainSectionItem {
-    margin-bottom: 20px
-}
-
 body {
     padding: 30px;
     font-family: 'Open Sans', sans-serif;
-}
-
-.asInlineBlock {
-    display: inline-block;
-    width: 160px;
-}
-
-.skill {
-    display: inline-block;
-    border: 2px solid black;
-    background-color: $background-light-blue;
-    padding: 8px;
-    border-radius: 6px;
-    white-space: nowrap;
 }
