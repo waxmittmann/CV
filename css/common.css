@@ -83,26 +83,30 @@
         .mainSection .mainSectionItem .sectionDescription .mainSubSectionItem .sectionTitle:before {
           content: "> "; } }
 
-/* line 104, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+@media (min-width: 590px) {
+  /* line 106, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+  .skillsSection .mainSectionItem > .sectionTitle {
+    margin-bottom: 20px; } }
+/* line 111, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 .skillsSection .mainSubSectionItem {
   overflow: hidden;
   min-height: 50px;
   margin-left: 10px; }
-  /* line 109, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+  /* line 116, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
   .skillsSection .mainSubSectionItem .sectionTitle {
     font-style: italic;
     font-size: 110%; }
-  /* line 114, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+  /* line 121, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
   .skillsSection .mainSubSectionItem .skillsPanel {
     margin-top: 0px; }
   @media (min-width: 590px) {
-    /* line 122, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+    /* line 129, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
     .skillsSection .mainSubSectionItem .sectionTitle {
       min-height: 1px;
       float: left;
       overflow: hidden;
       width: 150px; }
-    /* line 129, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+    /* line 136, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
     .skillsSection .mainSubSectionItem .skillsPanel {
       padding-left: 0px;
       margin-left: 0px;
@@ -111,7 +115,7 @@
       min-height: 50px;
       float: none;
       overflow: hidden; }
-      /* line 138, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+      /* line 145, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
       .skillsSection .mainSubSectionItem .skillsPanel .skill {
         border: 2px solid black;
         background-color: #EBEBFF;
@@ -122,12 +126,12 @@
         margin-left: 5px;
         margin-bottom: 2px; } }
 
-/* line 153, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+/* line 160, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 .footer {
   margin-top: 20px;
   font-size: 90%; }
 
-/* line 158, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
+/* line 165, /Users/max/Workspaces/Html/CVDraft/sass/common.scss */
 body {
   padding: 30px;
   font-family: 'Open Sans', sans-serif; }

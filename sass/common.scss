@@ -99,8 +99,15 @@ $resize-for-smaller-devices: 590px;
         }
     }
 }
-                        
-.skillsSection { 
+
+.skillsSection {     
+    
+    @media(min-width: $resize-for-smaller-devices) {
+        .mainSectionItem > .sectionTitle { 
+            margin-bottom: 20px;
+        }
+    }
+
     .mainSubSectionItem { 
         overflow: hidden;
         min-height: 50px;
