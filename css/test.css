@@ -15,9 +15,10 @@
   border: 2px solid black;
   padding: 20px;
   white-space: nowrap;
-  float: left; }
+  float: left;
+  color: red; }
 
-/* line 21, /Users/max/Workspaces/Html/CVDraft/sass/test.scss */
+/* line 22, /Users/max/Workspaces/Html/CVDraft/sass/test.scss */
 .rightContent {
   min-height: 50px;
   float: none;
