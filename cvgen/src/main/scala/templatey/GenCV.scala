@@ -160,6 +160,7 @@ object GenCV {
     )
 
     println(xhtml)
-    Files.write(Paths.get("./cv.html"), xhtml.toString.toCharArray.map(_.toByte))
+    //Files.write(Paths.get("./cv.html"), xhtml.toString.toCharArray.map(_.toByte))
+    Files.write(Paths.get("../index.html"), xhtml.toString.toCharArray.map(_.toByte))
   }
 }

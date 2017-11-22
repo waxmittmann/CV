@@ -66,6 +66,7 @@ object RenderCV {
 
       case WithSubsectionsSectionDescription(title, subsections) =>
         <div class="sectionDescription">
+          <div>{title}</div>
           <div>{subsections.map(subsection)}</div>
         </div>
     }
