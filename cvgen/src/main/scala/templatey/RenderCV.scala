@@ -106,13 +106,21 @@ object RenderCV {
       <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
     </head>
     <body class="main">
-      <h1 class="pageHeader">Maximilian Wittmann, PdD</h1>
+      <h1 class="pageHeader">Maximilian Wittmann, PhD</h1>
       <ul class="academicTitles">
         <li class="academicTitle">Doctor of Computer Science</li>
         <li class="academicTitle">Bachelor of Computer Science with First Class Honors</li>
       </ul>
 
       <div class="aboutMeBlurb"> { cvData.blurb.map(text => <p>{text}</p>) } </div>
+      <!--
+      <div class="aboutTheBlurb" class="contactMe">
+        <a href="#" onclick="toggle_visibility('aboutTheBlurbDetails');">This CV lives on AWS. Want to find out more?</a>
+        <div id="aboutTheBlurbDetails">
+          Here is an explanation of how this blurb is built.
+        </div>
+      </div>
+      -->
       <div class="contactMe">The best way to reach me is at <a href="mailto:damxam@gmail.com?Subject=Your%20CV" target="_top">damxam@gmail.com</a>, or through <a href="http://au.linkedin.com/in/maximilianwittmann">LinkedIn</a>.</div>
 
       <div class="cvMain">
@@ -121,8 +129,22 @@ object RenderCV {
         {section("Skills", cvData.skills)}
       </div>
 
-      <div class="footer">You can also check out my <a href="">fledgling GitHub account</a>, the most interesting thing going on there at the moment is probably my <a href="">twiddling with Java 8 Lambdas</a>.</div>
+      <div class="footer">You can also check out my <a href="https://github.com/waxmittmann">GitHub account</a> to see what kind of things I've been playing with.</div>
     </body>
+
+    <script type="text/javascript">
+    {
+      <!--
+      function toggle_visibility(id) {
+         var e = document.getElementById(id);
+         if(e.style.display == 'block')
+            e.style.display = 'none';
+         else
+            e.style.display = 'block';
+      }
+      //-->
+    }
+    </script>
   </html>
 
   def subsection(subsection: Subsection): Elem =

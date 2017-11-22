@@ -11,7 +11,7 @@ object GenCV {
       "May 2017 - Now:",
       "Senior Software Engineer @ Premonition",
       SimpleSectionDescription(
-        "Since joining Premonition I’ve worked on three products, all in Scala, and all using core Scala libraries such as Scalaz, Http4s, Doobie and Argonaut. This includes developing a new back-end from scratch to support a new product, including a full suite of tests mocking a set of remote services."
+        "Since joining Premonition I've worked on three products, all in Scala, and all using core Scala libraries such as Scalaz, Http4s, Doobie and Argonaut. This includes developing a new back-end from scratch to support a new product, including a full suite of tests mocking a set of remote services."
       )
     )
 
@@ -19,7 +19,7 @@ object GenCV {
       "March 2016 – May 2017:",
       "Senior Software Engineer (Big data) @ CBA",
       SimpleSectionDescription(
-        "During my time at CBA I worked on an internal product used to coordinate and transfer large volumes of data from a Hadoop-based big data cluster to internal consumers as part of the bank’s ETL pipeline. It was written largely in Scala and built on Cascading / Scalding.\nI also worked on a web-based DevOps tool developed to configure the application described earlier. It was written with a Scala backend (using Akka-Http) and a JavaScript frontend (using Angular)."
+        "During my time at CBA I worked on an internal product used to coordinate and transfer large volumes of data from a Hadoop-based big data cluster to internal consumers as part of the bank's ETL pipeline. It was written largely in Scala and built on Cascading / Scalding.\nI also worked on a web-based DevOps tool developed to configure the application described earlier. It was written with a Scala backend (using Akka-Http) and a JavaScript frontend (using Angular)."
       )
     )
 
@@ -157,7 +157,7 @@ object GenCV {
     val blurb = Seq(
       "I have been fascinated with computers since my childhood and that passion has taken me through a bachelor's degree, a PhD and into a career in industry.",
       "I aim to use the holistic perspective and skills I have gained to work with cutting-edge technologies on new frontiers where I can contribute to making the world a simpler, more fun, and hopefully a little better place.",
-      "For the last two years I have been working in a functional programming style and with functional stacks (mainly in Scala) and I am looking for opportunities to further my functional programming abilities"
+      "For the last two years I have been working in a functional programming style and with functional stacks (mainly in Scala) and I am looking for opportunities to further my functional programming abilities."
     )
 
     val xhtml = RenderCV.cv(CV(
