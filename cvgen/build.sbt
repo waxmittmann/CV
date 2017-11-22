@@ -17,24 +17,9 @@ val scalacheckVersion = "1.13.4"
 val specsVersion = "4.0.0"
 
 libraryDependencies ++= Seq(
-  // Scalaz
-//  "org.scalaz" %% "scalaz-core" % scalazVersion,
-//  "org.scalaz" %% "scalaz-effect" % scalazVersion,
-//  "org.scalaz" %% "scalaz-concurrent" % scalazVersion,
-
   // Cats
   "org.typelevel" %% "cats-core" % catsVersion,
-  //"org.typelevel" %% "cats-effect" % catsEffectVersion,
-  //"org.typelevel" %% "cats-mtl" % catsVersion,
   "org.typelevel" %% "dogs-core" % "0.6.9",
-
-  // Eff
-  "org.atnos" %% "eff" % "4.5.0",
-
-  // Monocle
-  "com.github.julien-truffaut" %%  "monocle-core"  % monocleVersionCats,
-  "com.github.julien-truffaut" %%  "monocle-macro" % monocleVersionCats,
-  "com.github.julien-truffaut" %%  "monocle-law"   % monocleVersionCats % "test",
 
   // Http4s
   "org.http4s" %% "http4s-core" % http4sVersion,
@@ -45,25 +30,11 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-generic" % circeVersion,
   "io.circe" %% "circe-parser" % circeVersion,
 
-  // Argonaut
-//  "io.argonaut" %% "argonaut" % argonautVersion,
-//  "io.argonaut" %% "argonaut-monocle" % argonautVersion,
-//  "io.argonaut" %% "argonaut-cats" % argonautVersion, // Cats
-//  "io.argonaut" %% "argonaut-scalaz" % argonautVersion,  // Scalaz
+  // Apache POI (for writing word docs)
+  "org.apache.poi" % "poi" % "3.17",
 
-  // Doobie scalaz
-//  "org.tpolecat" %% "doobie-core" % doobieVersion, // scalaz
-//  "org.tpolecat" %% "doobie-h2" % doobieVersion, // scalaz
-//  "org.tpolecat" %% "doobie-hikari" % doobieVersion, // scalaz
-//  "org.tpolecat" %% "doobie-postgres" % doobieVersion, // scalaz
-//  "org.tpolecat" %% "doobie-specs2" % doobieVersion, // scalaz
-
-  // Doobie cats
-  "org.tpolecat" %% "doobie-core-cats" % doobieVersion, // cats
-  "org.tpolecat" %% "doobie-h2-cats" % doobieVersion, // scalaz
-  "org.tpolecat" %% "doobie-hikari-cats" % doobieVersion, // scalaz
-  "org.tpolecat" %% "doobie-postgres-cats" % doobieVersion, // scalaz
-  "org.tpolecat" %% "doobie-specs2-cats" % doobieVersion, // scalaz
+  // Generate pdfs from html
+  "io.github.cloudify" %% "spdf" % "1.4.0",
 
   // Test
   "org.specs2" %% "specs2-core" % specsVersion % "test",
