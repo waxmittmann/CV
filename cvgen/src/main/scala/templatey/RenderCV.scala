@@ -4,10 +4,13 @@ import scala.xml.Elem
 
 object RenderCV {
 
+  type Paragraph = String
+
   /**
     * Shapes and such
     */
-  class CV(
+  case class CV(
+    blurb: Seq[Paragraph],
     experience: Section,
     education: Section,
     skills: Section
@@ -95,11 +98,7 @@ object RenderCV {
   /**
     * Render methods
     */
-  def cv(
-    experience: Section,
-    education: Section,
-    skills: Section
-  ): Elem = <html>
+  def cv(cvData: CV): Elem = <html>
     <head>
       <meta name="viewport" content="width=device-width, initial-scale=1"/>
       <link rel="stylesheet" type="text/css" href="./css/common.css" media="all"/>
@@ -113,17 +112,13 @@ object RenderCV {
         <li class="academicTitle">Bachelor of Computer Science with First Class Honors</li>
       </ul>
 
-      <div class="aboutMeBlurb">
-        <p>Since getting my first computer as a Christmas present (an Olivetti 386) I have been passionate about computing. An undergraduate degree in Computer Science reinforced that passion, so much so that I decided to pursue a doctorate. While the academic setting taught me many valuable lessons, I longed to be involved in developing software with direct practical applications.</p>
-        <p>Moving to industry has allowed me to round out my skillset, to move beyond mere programming to the engineering of quality, well-tested software in a team environment. In addition my experience as a consultant has given me experience in dealing with stakeholders and has let me better understand the way in which software produces customer value, and how such value can be measured.</p>
-        <p>I want to use this ten years' worth of programming experience in academic and industry settings to work with cutting-edge technologies, eschewing the well-trodden path in favor of new frontiers where I can contribute to making the world a simpler, more fun, and hopefully a little better place.</p>
-      </div>
+      <div class="aboutMeBlurb"> { cvData.blurb.map(text => <p>{text}</p>) } </div>
       <div class="contactMe">The best way to reach me is at <a href="mailto:damxam@gmail.com?Subject=Your%20CV" target="_top">damxam@gmail.com</a>, or through <a href="http://au.linkedin.com/in/maximilianwittmann">LinkedIn</a>.</div>
 
       <div class="cvMain">
-        {section("Experience", experience)}
-        {section("Education", education)}
-        {section("Skills", skills)}
+        {section("Experience", cvData.experience)}
+        {section("Education", cvData.education)}
+        {section("Skills", cvData.skills)}
       </div>
 
       <div class="footer">You can also check out my <a href="">fledgling GitHub account</a>, the most interesting thing going on there at the moment is probably my <a href="">twiddling with Java 8 Lambdas</a>.</div>

@@ -2,7 +2,7 @@ package templatey
 
 import java.nio.file.{Files, Paths}
 
-import templatey.RenderCV.{DatedSectionItem, ElemSectionDescription, Section, SimpleSectionDescription, SimpleSectionItem, Subsection, WithSubsectionsSectionDescription}
+import templatey.RenderCV.{CV, DatedSectionItem, ElemSectionDescription, Section, SimpleSectionDescription, SimpleSectionItem, Subsection, WithSubsectionsSectionDescription}
 
 object GenCV {
   def main(args: Array[String]): Unit = {
@@ -153,11 +153,19 @@ object GenCV {
       )
     )
 
-    val xhtml = RenderCV.cv(
+
+    val blurb = Seq(
+      "I have been fascinated with computers since my childhood and that passion has taken me through a bachelor's degree, a PhD and into a career in industry.",
+      "I aim to use the holistic perspective and skills I have gained to work with cutting-edge technologies on new frontiers where I can contribute to making the world a simpler, more fun, and hopefully a little better place.",
+      "For the last two years I have been working in a functional programming style and with functional stacks (mainly in Scala) and I am looking for opportunities to further my functional programming abilities"
+    )
+
+    val xhtml = RenderCV.cv(CV(
+      blurb,
       Section(List(premonition, cba, covata, thoughtworks)),
       Section(List(phd, honors, bachelors)),
       Section(List(programmingLanguages, frameworks))
-    )
+    ))
 
     println(xhtml)
     //Files.write(Paths.get("./cv.html"), xhtml.toString.toCharArray.map(_.toByte))
