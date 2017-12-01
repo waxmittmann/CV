@@ -7,7 +7,7 @@ import templatey.CV._
 object GenCV {
   def main(args: Array[String]): Unit = {
 
-    val premonition = DatedSectionItem(
+    val premonition = SectionItem.dated(
       "May 2017 - Now:",
       "Senior Software Engineer @ Premonition",
       SimpleSectionDescription(
@@ -15,7 +15,7 @@ object GenCV {
       )
     )
 
-    val cba = DatedSectionItem(
+    val cba = SectionItem.dated(
       "March 2016 – May 2017:",
       "Senior Software Engineer (Big data) @ CBA",
       SimpleSectionDescription(
@@ -23,9 +23,9 @@ object GenCV {
       )
     )
 
-    val covata = DatedSectionItem(
-      title = "Software Developer @ Covata Australia",
-      dateSpan = "October 2014 - Now",
+    val covata = SectionItem.dated(
+      "Software Developer @ Covata Australia",
+      "October 2014 - Now",
       ElemSectionDescription(
         <div>
           Employed as a full-stack software developer, responsible for developing a security application using a Java + Scala + Angular + Spring stack in an Agile team. In addition to software development skills, the role also requires aspects of a Business Analyst, with all team members expected to contribute to the ongoing design and improvement of the product.
@@ -38,7 +38,7 @@ object GenCV {
       )
     )
 
-    val thoughtworks = DatedSectionItem(
+    val thoughtworks = SectionItem.dated(
       "Graduate Software Developer @ ThoughtWorks Australia",
       "October 2013 - October 2014",
       WithSubsectionsSectionDescription(
@@ -64,7 +64,7 @@ object GenCV {
       )
     )
 
-    val phd = DatedSectionItem(
+    val phd = SectionItem.dated(
       "2008-2013:",
       "Doctor of Computer Science @ Macquarie University, Australia",
       SimpleSectionDescription(
@@ -72,7 +72,7 @@ object GenCV {
       )
     )
 
-    val honors = DatedSectionItem(
+    val honors = SectionItem.dated(
       "2005-2007:",
       "Bachelor of Computer Science with Honors (First Class) @ Macquarie University, Australia",
       SimpleSectionDescription(
@@ -80,7 +80,7 @@ object GenCV {
       )
     )
 
-    val bachelors = DatedSectionItem(
+    val bachelors = SectionItem.dated(
       "2001-2005:",
       "Bachelor of Computer Science (GPA 3.743 of 4.0) @ Macquarie University, Australia",
       SimpleSectionDescription(
@@ -88,7 +88,7 @@ object GenCV {
       )
     )
 
-    val programmingLanguages = SimpleSectionItem(
+    val programmingLanguages = SectionItem.simple(
       title = "Programming Languages",
       description = ElemSectionDescription(
         <div class="mainSectionDescription">
@@ -120,7 +120,7 @@ object GenCV {
       )
     )
 
-    val frameworks = SimpleSectionItem(
+    val frameworks = SectionItem.simple(
       title = "Frameworks and Technologies:",
       description = ElemSectionDescription(
         <div class="mainSectionDescription">

@@ -23,14 +23,14 @@ object Reader {
     }
 
     // Todo: Add link to SO post on why this
-    implicit val sectionItemDecoder = List[Decoder[SectionItem]](
-      Decoder[DatedSectionItem].widen,
-      Decoder[SimpleSectionItem].widen
-    ).reduceLeft(_ or _)
+//    implicit val sectionItemDecoder = List[Decoder[SectionItem]](
+//      Decoder[DatedSectionItem].widen,
+//      Decoder[SimpleSectionItem].widen
+//    ).reduceLeft(_ or _)
 
     implicit val sectionDescriptionDecoder = List[Decoder[SectionDescription]](
-      Decoder[SimpleSectionDescription].widen,
-      Decoder[ElemSectionDescription].widen
+      Decoder[ElemSectionDescription].widen,
+      Decoder[SimpleSectionDescription].widen
     ).reduceLeft(_ or _)
 
     implicit val cv = Decoder[CV]
@@ -43,11 +43,90 @@ object Reader {
 
   def main(args: Array[String]): Unit = {
 
+    val sectionItem =
+      """
+        |       {
+        |         "title": "My best experience",
+        |         "dateSpan": "Yesterday - Tomorrow",
+        |         "description": {
+        |           "title": "This is the section description"
+        |         }
+        |       }
+      """.stripMargin
+
+    println(decode[SectionItem](sectionItem))
+//    println(decode[DatedSectionItem](sectionItem))
+
+    val section =
+      """
+        |{
+        |     "items": [
+        |       {
+        |         "title": "My best experience",
+        |         "dateSpan": "Yesterday - Tomorrow",
+        |         "description": {
+        |           "title": "This is the section description"
+        |         }
+        |       },
+        |       {
+        |         "title": "My best experience",
+        |         "description": {
+        |           "description": "<h1>I am description!</h1>"
+        |         }
+        |       }
+        |     ]
+        |}
+      """.stripMargin
+
+    println(decode[Section](section))
+
     val cv =
       """
         |{
+        |  "blurb": [
+        |    "This is a blurb.",
+        |    "Yes indeed"
+        |  ],
         |
+        |  "experience": {
+        |     "items": [
+        |       {
+        |         "title": "My best experience",
+        |         "dateSpan": "Yesterday - Tomorrow",
+        |         "description": {
+        |           "title": "This is the section description"
+        |         }
+        |       },
+        |       {
+        |         "title": "My best experience",
+        |         "description": {
+        |           "description": "<h1>I am description!</h1>"
+        |         }
+        |       }
+        |     ]
+        |  },
         |
+        |  "education": { "items": [
+        |    {
+        |      "title": "My best experience",
+        |      "dateSpan": "Yesterday - Tomorrow",
+        |      "description": {
+        |        "title": "This is the section description",
+        |        "subsections": [
+        |          {
+        |            "title": "SubsectionA",
+        |            "description": "Blah"
+        |          },
+        |          {
+        |            "title": "SubsectionB",
+        |            "description": "Bleh"
+        |          }
+        |        ]
+        |      }
+        |    }
+        |  ]},
+        |
+        |  "skills": { "items": [] }
         |}
       """.stripMargin
 

@@ -34,21 +34,21 @@ object RenderCV {
 
   implicit object RenderSectionItem extends RenderElem[SectionItem] {
     override def render(value: SectionItem): Elem = value match {
-      case data @ DatedSectionItem(_, _, _)   => datedItem(data)
-      case data @ SimpleSectionItem(_, _)     => simpleItem(data)
+      case data @ SectionItem(title, Some(dateSpan), description)   => datedItem(title, dateSpan, description)
+      case data @ SectionItem(title, None, description)             => simpleItem(title, description)
     }
 
-    def datedItem(data: DatedSectionItem)(implicit renderDescription: RenderElem[SectionDescription]): Elem =
+    def datedItem(title: String, dateSpan: String, description: SectionDescription)(implicit renderDescription: RenderElem[SectionDescription]): Elem =
       <div class="mainSectionItem">
-        <div class="dateSpan">{data.dateSpan}</div>
-        <div class="sectionTitle">{data.title}</div>
-        <div class="sectionDescription">{renderDescription.render(data.description)}</div>
+        <div class="dateSpan">{dateSpan}</div>
+        <div class="sectionTitle">{title}</div>
+        <div class="sectionDescription">{renderDescription.render(description)}</div>
       </div>
 
-    def simpleItem(data: SimpleSectionItem)(implicit renderDescription: RenderElem[SectionDescription]): Elem =
+    def simpleItem(title: String, description: SectionDescription)(implicit renderDescription: RenderElem[SectionDescription]): Elem =
       <div class="mainSectionItem">
-        <div class="sectionTitle">{data.title}</div>
-        <div class="sectionDescription">{renderDescription.render(data.description)}</div>
+        <div class="sectionTitle">{title}</div>
+        <div class="sectionDescription">{renderDescription.render(description)}</div>
       </div>
   }
 
