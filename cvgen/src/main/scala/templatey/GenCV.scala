@@ -2,7 +2,7 @@ package templatey
 
 import java.nio.file.{Files, Paths}
 
-import templatey.RenderCV.{CV, DatedSectionItem, ElemSectionDescription, Section, SimpleSectionDescription, SimpleSectionItem, Subsection, WithSubsectionsSectionDescription}
+import templatey.CV._
 
 object GenCV {
   def main(args: Array[String]): Unit = {

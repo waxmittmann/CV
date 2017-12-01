@@ -1,102 +1,16 @@
 package templatey
 
-import scala.xml.Elem
+import templatey.CV._
 
-import io.circe.generic.JsonCodec
-import io.circe._, io.circe.generic.semiauto._, io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
-import cats.syntax.functor._
+import scala.xml.Elem
 
 object RenderCV {
 
   type Paragraph = String
 
-
-  implicit val decodeXmlString: Decoder[Elem] = (c: HCursor) => {
-    c.value.asString
-      .map(s => Right(scala.xml.XML.loadString(s)))
-      .getOrElse(Left(DecodingFailure("Couldn't decode string to elem", c.history)))
-  }
-
-    /*
-  for {
-    text <- c.value.asString
-    elem <- {
-      val x: Elem = scala.xml.XML.loadString(text)
-      Some(x)
-    }
-  } yield elem
-*/
-
   trait RenderElem[S] {
     def render(value: S): Elem
   }
-
-  /**
-    * Shapes and such
-    */
-  //@JsonCodec
-  case class CV(
-    blurb: Seq[Paragraph],
-    experience: Section,
-    education: Section,
-    skills: Section
-  )
-
-  //@JsonCodec
-  case class Section(items: List[SectionItem])
-  implicit val sectionDecoder = deriveDecoder[Section]
-
-  //@JsonCodec
-  sealed trait SectionItem
-//  implicit val sectionItemDecoder = deriveDecoder[SectionItem]
-  implicit val sectionItemDecoder = List[Decoder[SectionItem]](
-    Decoder[DatedSectionItem].widen,
-    Decoder[SimpleSectionItem].widen
-  ).reduceLeft(_ or _)
-
-  //@JsonCodec
-  case class DatedSectionItem(
-    title: String,
-    dateSpan: String, // Todo dates
-    description: SectionDescription
-  ) extends SectionItem
-
-  //@JsonCodec
-  case class SimpleSectionItem(
-    title: String,
-    description: SectionDescription
-  ) extends SectionItem
-
-  //@JsonCodec
-  sealed trait SectionDescription
-//  implicit val sectionDescriptionDecoder = deriveDecoder[SectionDescription]
-  implicit val sectionDescriptionDecoder = List[Decoder[SectionDescription]](
-    Decoder[SimpleSectionDescription].widen,
-    Decoder[ElemSectionDescription].widen
-  ).reduceLeft(_ or _)
-
-  //@JsonCodec
-  case class SimpleSectionDescription(
-    title: String
-  ) extends SectionDescription
-
-  //@JsonCodec
-  case class ElemSectionDescription(
-    description: Elem
-  ) extends SectionDescription
-
-  //@JsonCodec
-  case class Subsection(
-    title: String,
-    description: String
-  )
-  implicit val subsectionDecoder = deriveDecoder[Subsection]
-
-  //@JsonCodec
-  case class WithSubsectionsSectionDescription(
-    title: String,
-    subsections: List[Subsection]
-  ) extends SectionDescription
 
   implicit object RenderSectionDescription extends RenderElem[SectionDescription] {
     override def render(value: SectionDescription): Elem = value match {

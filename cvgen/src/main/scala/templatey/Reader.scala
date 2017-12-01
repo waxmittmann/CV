@@ -1,107 +1,57 @@
 package templatey
 
 import io.circe._
-import templatey.Children.{ChildA, ChildB}
-import templatey.Stuff.Parent
-//import io.circe.generic.JsonCodec
-//import io.circe.generic.auto._
-import io.circe.generic.semiauto._
 import io.circe.parser._
-//import io.circe.syntax._
-import templatey.RenderCV.{SectionDescription, SimpleSectionDescription, Subsection}
+import templatey.CV._
+import io.circe.generic.JsonCodec
+import io.circe._
+import io.circe.generic.semiauto._
+import io.circe.generic.auto._
+import io.circe.parser._
+import io.circe.syntax._
 import cats.syntax.functor._
 
-object Stuff {
-  sealed trait Parent
-}
-
-object Parent {
-  implicit val childACodec = deriveDecoder[ChildA]
-  implicit val childBCodec = deriveDecoder[ChildB]
-//  implicit val parentCodec = deriveDecoder[Parent]
-
-  implicit val decodeParent: Decoder[Parent] =
-    List[Decoder[Parent]](
-      Decoder[ChildA].widen,
-      Decoder[ChildB].widen
-    ).reduceLeft(_ or _)
-}
-
-object Children {
-  case class ChildA(str: String) extends Parent
-  case class ChildB(nr: Int) extends Parent
-}
+import scala.xml.Elem
 
 object Reader {
 
-//  @JsonCodec
-//  case class Thing(name: String, age: Int)
-//
-//  val thingString =
-//    """
-//      |{
-//      |   "name": "Joe",
-//      |   "age": 53
-//      |}
-//    """.stripMargin
+  object JsonCodecs {
+    implicit val decodeXmlString: Decoder[Elem] = (c: HCursor) => {
+      c.value.asString
+        .map(s => Right(scala.xml.XML.loadString(s)))
+        .getOrElse(Left(DecodingFailure("Couldn't decode string to elem", c.history)))
+    }
 
-  val sectionString =
-    """
-      |{
-      |   "title": "Hi There!"
-      |}
-    """.stripMargin
+    // Todo: Add link to SO post on why this
+    implicit val sectionItemDecoder = List[Decoder[SectionItem]](
+      Decoder[DatedSectionItem].widen,
+      Decoder[SimpleSectionItem].widen
+    ).reduceLeft(_ or _)
 
-  val subsectionString =
-    """
-      |{
-      |   "title": "ABC",
-      |   "description": "Boo"
-      |}
-    """.stripMargin
+    implicit val sectionDescriptionDecoder = List[Decoder[SectionDescription]](
+      Decoder[SimpleSectionDescription].widen,
+      Decoder[ElemSectionDescription].widen
+    ).reduceLeft(_ or _)
 
-  /*
-    case class SimpleSectionDescription(
-    title: String
-  ) extends SectionDescription
+    implicit val cv = Decoder[CV]
+  }
 
- @JsonCodec
-  case class Subsection(
-    title: String,
-    description: String
-  )
+  import JsonCodecs._
 
-   */
-
-  val parentStr =
-    """
-      |{
-      |   "str": "haha"
-      |}
-    """.stripMargin
-
-//  object JsonCodecs {
-//    implicit val parentCodec = deriveDecoder[Parent]
-//  }
-  import Parent._
+  def read(cvJson: String): Either[Error, CV] =
+    decode[CV](cvJson)
 
   def main(args: Array[String]): Unit = {
 
-//    val json = Json.fromString(thingString)
-//    println(json)
-//
-//    val thing = decode[Thing](thingString)
-//    println(thing)
+    val cv =
+      """
+        |{
+        |
+        |
+        |}
+      """.stripMargin
 
-    val section: Either[Error, SectionDescription] = decode[SectionDescription](sectionString)
-//    val section = decode[SimpleSectionDescription](sectionString)
-    println(section)
-
-    val subsection = decode[Subsection](subsectionString)
-    println(subsection)
-
-    val test = decode[Stuff.Parent](parentStr)
-    println(test)
+    println(read(cv))
   }
 
 }
