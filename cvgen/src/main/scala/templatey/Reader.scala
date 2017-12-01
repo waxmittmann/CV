@@ -1,15 +1,12 @@
 package templatey
 
+import cats.syntax.functor._
 import io.circe._
-import io.circe.parser._
-import templatey.CV._
-import io.circe.generic.JsonCodec
-import io.circe._
-import io.circe.generic.semiauto._
 import io.circe.generic.auto._
 import io.circe.parser._
 import io.circe.syntax._
-import cats.syntax.functor._
+
+import templatey.CV._
 
 import scala.xml.Elem
 
@@ -23,11 +20,6 @@ object Reader {
     }
 
     // Todo: Add link to SO post on why this
-//    implicit val sectionItemDecoder = List[Decoder[SectionItem]](
-//      Decoder[DatedSectionItem].widen,
-//      Decoder[SimpleSectionItem].widen
-//    ).reduceLeft(_ or _)
-
     implicit val sectionDescriptionDecoder = List[Decoder[SectionDescription]](
       Decoder[ElemSectionDescription].widen,
       Decoder[SimpleSectionDescription].widen
@@ -55,7 +47,6 @@ object Reader {
       """.stripMargin
 
     println(decode[SectionItem](sectionItem))
-//    println(decode[DatedSectionItem](sectionItem))
 
     val section =
       """

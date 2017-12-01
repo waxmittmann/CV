@@ -12,58 +12,8 @@ case class CV(
   skills: Section
 )
 
-/*
-{
-  "blurb": [
-    "This is a blurb.",
-    "Yes indeed"
-  ],
-
-  "experience": [
-    {
-      "title": "My best experience",
-      "dateSpan": "Yesterday - Tomorrow",
-      "description": {
-        "title": "This is the section description"
-      }
-    },
-    {
-      "title": "My best experience",
-      "description": {
-        "description": "<h1>I am description!</h1>"
-      }
-    }
-  ],
-
-
-  "education": [
-    {
-      "title": "My best experience",
-      "dateSpan": "Yesterday - Tomorrow",
-      "description": {
-        "title": "This is the section description",
-        "subsections": [
-          {
-            "title": "SubsectionA",
-            "description": "Blah"
-          },
-          {
-            "title": "SubsectionB",
-            "description": "Bleh"
-          }
-        ]
-      }
-    }
-  ],
-
-  "skills": []
-}
- */
-
 object CV {
   case class Section(items: List[SectionItem])
-
-//  sealed trait SectionItem
 
   case class SectionItem(
     title: String,
@@ -78,11 +28,6 @@ object CV {
     def dated(dateSpan: String, title: String, description: SectionDescription): SectionItem =
       SectionItem(title, Some(dateSpan), description)
   }
-
-//  case class SimpleSectionItem(
-//    title: String,
-//    description: SectionDescription
-//  ) extends SectionItem
 
   sealed trait SectionDescription
 
