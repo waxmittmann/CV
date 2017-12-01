@@ -3,7 +3,7 @@ package templatey
 import io.circe.{Decoder, Json}
 import io.circe.parser.decode
 import org.specs2.mutable.Specification
-import templatey.CV.{Section, SectionDescription, SectionItem}
+import templatey.CV._
 import templatey.Reader.JsonCodecs._
 import templatey.Reader.{JsonCodecs, read}
 
@@ -19,25 +19,25 @@ object ReaderSpec extends Specification {
         """.stripMargin
 
       println(decode[SectionDescription](sectionItem))
-      ko
-    }.pendingUntilFixed
+
+      decode[SectionDescription](sectionItem) must beRight(SimpleSectionDescription("This is the section description"))
+    }
 
     "correctly parse an elem section description" in {
       val sectionItem =
         """
           |{
-          |   "description": "<test>\n<sometagshere>blah</sometagshere></test>"
+          |   "description": "<test><sometagshere>blah</sometagshere></test>"
           |}
         """.stripMargin
 
-      println(decode[SectionDescription](sectionItem))
-      ko
-    }.pendingUntilFixed
+      decode[SectionDescription](sectionItem) must beRight(ElemSectionDescription(<test><sometagshere>{"blah"}</sometagshere></test>))
+    }
 
     "correctly parse a section description with subsections" in {
       val sectionItem =
         """
-          |"description": {
+          |{
           |   "title": "TITLE",
           |   "subsections": [
           |     {
@@ -52,9 +52,16 @@ object ReaderSpec extends Specification {
           |}
         """.stripMargin
 
-      println(decode[SectionDescription](sectionItem))
-      ko
-    }.pendingUntilFixed
+      decode[SectionDescription](sectionItem) must beRight(
+        WithSubsectionsSectionDescription(
+          "TITLE",
+          List(
+            Subsection("I am subsection", "Blah"),
+            Subsection("More subsection", "Blah Blah")
+          )
+        )
+      )
+    }
 
     "correctly parse an undated section item" in {
       val sectionItem =
@@ -67,9 +74,10 @@ object ReaderSpec extends Specification {
           |       }
         """.stripMargin
 
-      println(JsonCodecs.sectionItemDecoder.decodeJson(Json.fromString(sectionItem)))
-      ko
-    }.pendingUntilFixed
+      decode[SectionItem](sectionItem) must beRight(
+        SectionItem.simple("My best experience", SimpleSectionDescription("This is the section description"))
+      )
+    }
 
     "correctly parse a dated section item" in {
       val sectionItem =
@@ -83,9 +91,10 @@ object ReaderSpec extends Specification {
           |       }
         """.stripMargin
 
-      println(decode[SectionItem](sectionItem))
-      ko
-    }.pendingUntilFixed
+      decode[SectionItem](sectionItem) must beRight(
+        SectionItem.dated("Yesterday - Tomorrow", "My best experience", SimpleSectionDescription("This is the section description"))
+      )
+    }
 
     "correctly parse a section" in {
       val section =
@@ -109,9 +118,13 @@ object ReaderSpec extends Specification {
           |}
         """.stripMargin
 
-      println(decode[Section](section))
-      ko
-    }.pendingUntilFixed
+      decode[Section](section) must beRight(
+        Section(List(
+          SectionItem.dated("Yesterday - Tomorrow", "My best experience", SimpleSectionDescription("This is the section description")),
+          SectionItem.simple("My best experience", ElemSectionDescription(<h1>{"I am description!"}</h1>))
+        ))
+      )
+    }
 
     "correctly parse a complete cv" in {
       val cv =
@@ -165,8 +178,6 @@ object ReaderSpec extends Specification {
         """.stripMargin
 
       println(read(cv))
-
-
       ko
     }.pendingUntilFixed
   }
