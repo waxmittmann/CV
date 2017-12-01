@@ -3,7 +3,8 @@ package templatey
 import scala.xml.Elem
 
 import io.circe.generic.JsonCodec
-import io.circe._, io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
+import io.circe._, io.circe.generic.semiauto._, io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
+import cats.syntax.functor._
 
 object RenderCV {
 
@@ -43,10 +44,15 @@ object RenderCV {
 
   //@JsonCodec
   case class Section(items: List[SectionItem])
+  implicit val sectionDecoder = deriveDecoder[Section]
 
   //@JsonCodec
   sealed trait SectionItem
-  implicit val sectionItemDecoder = Decoder.der
+//  implicit val sectionItemDecoder = deriveDecoder[SectionItem]
+  implicit val sectionItemDecoder = List[Decoder[SectionItem]](
+    Decoder[DatedSectionItem].widen,
+    Decoder[SimpleSectionItem].widen
+  ).reduceLeft(_ or _)
 
   //@JsonCodec
   case class DatedSectionItem(
@@ -63,6 +69,11 @@ object RenderCV {
 
   //@JsonCodec
   sealed trait SectionDescription
+//  implicit val sectionDescriptionDecoder = deriveDecoder[SectionDescription]
+  implicit val sectionDescriptionDecoder = List[Decoder[SectionDescription]](
+    Decoder[SimpleSectionDescription].widen,
+    Decoder[ElemSectionDescription].widen
+  ).reduceLeft(_ or _)
 
   //@JsonCodec
   case class SimpleSectionDescription(
@@ -79,6 +90,7 @@ object RenderCV {
     title: String,
     description: String
   )
+  implicit val subsectionDecoder = deriveDecoder[Subsection]
 
   //@JsonCodec
   case class WithSubsectionsSectionDescription(
