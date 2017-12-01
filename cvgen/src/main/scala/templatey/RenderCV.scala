@@ -2,13 +2,38 @@ package templatey
 
 import scala.xml.Elem
 
+import io.circe.generic.JsonCodec
+import io.circe._, io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
+
 object RenderCV {
 
   type Paragraph = String
 
+
+  implicit val decodeXmlString: Decoder[Elem] = (c: HCursor) => {
+    c.value.asString
+      .map(s => Right(scala.xml.XML.loadString(s)))
+      .getOrElse(Left(DecodingFailure("Couldn't decode string to elem", c.history)))
+  }
+
+    /*
+  for {
+    text <- c.value.asString
+    elem <- {
+      val x: Elem = scala.xml.XML.loadString(text)
+      Some(x)
+    }
+  } yield elem
+*/
+
+  trait RenderElem[S] {
+    def render(value: S): Elem
+  }
+
   /**
     * Shapes and such
     */
+  //@JsonCodec
   case class CV(
     blurb: Seq[Paragraph],
     experience: Section,
@@ -16,40 +41,46 @@ object RenderCV {
     skills: Section
   )
 
+  //@JsonCodec
   case class Section(items: List[SectionItem])
 
+  //@JsonCodec
   sealed trait SectionItem
+  implicit val sectionItemDecoder = Decoder.der
 
-  trait RenderElem[S] {
-    def render(value: S): Elem
-  }
-
+  //@JsonCodec
   case class DatedSectionItem(
     title: String,
     dateSpan: String, // Todo dates
     description: SectionDescription
   ) extends SectionItem
 
+  //@JsonCodec
   case class SimpleSectionItem(
     title: String,
     description: SectionDescription
   ) extends SectionItem
 
+  //@JsonCodec
   sealed trait SectionDescription
 
+  //@JsonCodec
   case class SimpleSectionDescription(
     title: String
   ) extends SectionDescription
 
+  //@JsonCodec
   case class ElemSectionDescription(
     description: Elem
   ) extends SectionDescription
 
+  //@JsonCodec
   case class Subsection(
     title: String,
     description: String
   )
 
+  //@JsonCodec
   case class WithSubsectionsSectionDescription(
     title: String,
     subsections: List[Subsection]
