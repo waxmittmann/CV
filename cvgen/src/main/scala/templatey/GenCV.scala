@@ -162,13 +162,6 @@ object GenCV {
       "For the last two years I have been working in a functional programming style and with functional stacks (mainly in Scala) and I am looking for opportunities to further my functional programming abilities."
     )
 
-//    val xhtml = RenderCV.cv(CV(
-//      blurb,
-//      Section(List(premonition, cba, covata, thoughtworks)),
-//      Section(List(phd, honors, bachelors)),
-//      Section(List(programmingLanguages, frameworks))
-//    ))
-
     val cv = CV(
       blurb,
       Section("Experience", List(premonition, cba, covata, thoughtworks)),
@@ -176,14 +169,6 @@ object GenCV {
       Section("Skills", List(programmingLanguages, frameworks))
     )
 
-//    val xhtml = CV(
-//      blurb,
-//      Section("Experience", List(premonition, cba, covata, thoughtworks)),
-//      Section("Education", List(phd, honors, bachelors)),
-//      Section("Skills", List(programmingLanguages, frameworks))
-//    ).render[Elem](cvRenderer)
-
-//    val xhtml = RenderCV.RenderCV(cv).render[Elem]
     val xhtml = cv.render[Elem]
 
     println(xhtml)

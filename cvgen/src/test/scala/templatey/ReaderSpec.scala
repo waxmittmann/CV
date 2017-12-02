@@ -100,6 +100,7 @@ object ReaderSpec extends Specification {
       val section =
         """
           |{
+          |     "header": "title",
           |     "items": [
           |       {
           |         "title": "My best experience",
