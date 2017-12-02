@@ -14,11 +14,10 @@ object GenCV {
     val renderedCv = for {
       cv <- JsonParser.readFile("./src/main/resources/cv.json")
     } yield {
-      println(cv)
       cv.render[Elem]
     }
 
-    println(renderedCv)
+    Files.write(Paths.get("../index.html"), renderedCv.toString.toCharArray.map(_.toByte))
   }
 
   def main2(args: Array[String]): Unit = {
