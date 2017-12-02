@@ -1,9 +1,9 @@
 package cvgen
 
+import scala.xml.Elem
+
 import cvgen.CV.Section
 import cvgen.RenderCV.Paragraph
-
-import scala.xml.Elem
 
 case class CV(
   blurb: Seq[Paragraph],

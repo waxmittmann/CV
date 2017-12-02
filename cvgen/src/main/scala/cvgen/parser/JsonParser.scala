@@ -1,18 +1,18 @@
 package cvgen.parser
 
-import java.nio.file.{FileSystems, Files, Path}
+import java.nio.file.{FileSystems, Files}
 import java.util
 import scala.collection.JavaConverters._
+import scala.xml.Elem
 
 import cats.syntax.functor._
-import cvgen.CV
-import cvgen.CV._
 import io.circe._
 import io.circe.generic.auto._
 import io.circe.generic.semiauto._
 import io.circe.parser._
 
-import scala.xml.Elem
+import cvgen.CV
+import cvgen.CV._
 
 object JsonParser {
 
