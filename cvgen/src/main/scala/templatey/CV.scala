@@ -13,7 +13,10 @@ case class CV(
 )
 
 object CV {
-  case class Section(items: List[SectionItem])
+  case class Section(
+    header: String,
+    items: List[SectionItem]
+  )
 
   case class SectionItem(
     title: String,

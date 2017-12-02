@@ -119,10 +119,13 @@ object ReaderSpec extends Specification {
         """.stripMargin
 
       decode[Section](section) must beRight(
-        Section(List(
-          SectionItem.dated("Yesterday - Tomorrow", "My best experience", SimpleSectionDescription("This is the section description")),
-          SectionItem.simple("My best experience", ElemSectionDescription(<h1>{"I am description!"}</h1>))
-        ))
+        Section(
+          "title",
+          List(
+            SectionItem.dated("Yesterday - Tomorrow", "My best experience", SimpleSectionDescription("This is the section description")),
+            SectionItem.simple("My best experience", ElemSectionDescription(<h1>{"I am description!"}</h1>))
+          )
+        )
       )
     }
 
