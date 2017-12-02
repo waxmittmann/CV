@@ -1,24 +1,13 @@
-package templatey
+package cvgen.renderers
 
-import templatey.CV._
+import cvgen.CV
+import cvgen.CV._
+import cvgen.RenderCV.Renderer
 
 import scala.xml.Elem
 
-object RenderCV {
-
-  trait Renderer[S, T] {
-    def render(value: S): T
-  }
-
-  type Paragraph = String
-
+object ElemRenderer {
   trait XmlRenderer[S] extends Renderer[S, Elem]
-
-  // Naming an implicit class the same as its parent will cause it to be hidden and not work unless implicitly imported
-  implicit class AddRenderMethod(cv: CV) {
-    def render[S](implicit renderer: Renderer[CV, S]): S =
-      renderer.render(cv)
-  }
 
   implicit val simpleSectionDescriptionRenderer = new XmlRenderer[SimpleSectionDescription] {
     override def render(value: SimpleSectionDescription) =
@@ -93,7 +82,7 @@ object RenderCV {
 
     override def render(value: Section) =
       <div class="mainSection">
-        <h1 class="mainSectionHeader">{value.header}</h1>
+        <h1 class="mainSectionHeader">{value.title}</h1>
         {value.items.map(sectionItemRenderer.render)}
       </div>
   }
@@ -152,4 +141,6 @@ object RenderCV {
       </html>
     }
   }
+
 }
+

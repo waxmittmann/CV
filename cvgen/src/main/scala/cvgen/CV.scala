@@ -1,7 +1,7 @@
-package templatey
+package cvgen
 
-import templatey.CV.Section
-import templatey.RenderCV.Paragraph
+import cvgen.CV.Section
+import cvgen.RenderCV.Paragraph
 
 import scala.xml.Elem
 
@@ -14,7 +14,7 @@ case class CV(
 
 object CV {
   case class Section(
-    header: String,
+    title: String,
     items: List[SectionItem]
   )
 

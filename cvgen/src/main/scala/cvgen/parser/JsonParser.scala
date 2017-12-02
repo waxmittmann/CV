@@ -1,17 +1,20 @@
-package templatey
+package cvgen.parser
+
+import java.nio.file.{FileSystems, Files, Path}
+import java.util
+import scala.collection.JavaConverters._
 
 import cats.syntax.functor._
+import cvgen.CV
+import cvgen.CV._
 import io.circe._
 import io.circe.generic.auto._
 import io.circe.generic.semiauto._
 import io.circe.parser._
-import io.circe.syntax._
-
-import templatey.CV._
 
 import scala.xml.Elem
 
-object Reader {
+object JsonParser {
 
   object JsonCodecs {
     implicit val decodeXmlString: Decoder[Elem] = (c: HCursor) => {
@@ -38,4 +41,9 @@ object Reader {
 
   def read(cvJson: String): Either[Error, CV] =
     decode[CV](cvJson)
+
+  def readFile(cvFile: String): Either[Error, CV] = {
+    val jsonString = Files.readAllLines(FileSystems.getDefault().getPath(cvFile)).asScala.mkString("\n")
+    read(jsonString)
+  }
 }

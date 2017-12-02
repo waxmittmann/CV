@@ -1,13 +1,13 @@
-package templatey
+package cvgen
 
 import io.circe.{Decoder, Json}
 import io.circe.parser.decode
 import org.specs2.mutable.Specification
-import templatey.CV._
-import templatey.Reader.JsonCodecs._
-import templatey.Reader.{JsonCodecs, read}
+import cvgen.CV._
+import cvgen.parser.JsonParser.JsonCodecs._
+import cvgen.parser.JsonParser.{JsonCodecs, read}
 
-object ReaderSpec extends Specification {
+object JsonParserSpec$ extends Specification {
 
   "Reader" should {
     "correctly parse a simple section description" in {

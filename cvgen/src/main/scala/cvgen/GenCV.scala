@@ -1,15 +1,27 @@
-package templatey
+package cvgen
 
 import java.nio.file.{Files, Paths}
 
-import templatey.CV._
+import cvgen.CV._
 import RenderCV._
+import cvgen.parser.JsonParser
+import cvgen.renderers.ElemRenderer._
 
 import scala.xml.Elem
 
 object GenCV {
   def main(args: Array[String]): Unit = {
+    val renderedCv = for {
+      cv <- JsonParser.readFile("./src/main/resources/cv.json")
+    } yield {
+      println(cv)
+      cv.render[Elem]
+    }
 
+    println(renderedCv)
+  }
+
+  def main2(args: Array[String]): Unit = {
     val premonition = SectionItem.dated(
       "May 2017 - Now:",
       "Senior Software Engineer @ Premonition",

@@ -1,0 +1,56 @@
+{
+  "blurb": [
+    "I have been fascinated with computers since my childhood and that passion has taken me through a bachelor's degree, a PhD and into a career in industry.",
+    "I aim to use the holistic perspective and skills I have gained to work with cutting-edge technologies on new frontiers where I can contribute to making the world a simpler, more fun, and hopefully a little better place.",
+    "For the last two years I have been working in a functional programming style and with functional stacks (mainly in Scala) and I am looking for opportunities to further my functional programming abilities."
+  ],
+
+  "experience": {
+    "title": "Experience",
+    "items": [
+      {
+        "title": "Graduate Software Developer @ ThoughtWorks Australia",
+        "dateSpan": "October 2013 - October 2014",
+        "description": {
+          "title": "Employed as part of ThoughtWorks professional services (consulting services) as a software developer. During my year at ThoughtWorks I worked with several clients:",
+          "items": [
+              {
+                "title": "Software Developer @ a Major Australian bank",
+                "description": "Employed to perform ongoing improvement of an online insurance sales platform. The platform backend is Spring-based and it employs a single-page client-side MVC front-end built on Angular."
+              },
+              {
+                "title": "DevOps @ a Major Australian bank",
+                "description": "Employed to transiton the client from a privately-hosted cloud located in a traditional data center to a cloud hosted using Amazon Web Services (AWS). Ansible was utilized to automatically deploy web applications to AWS and to provision the necessary infrastructure."
+              },
+              {
+                "title": "Software Developer @ a Non-profit organization",
+                "description": "Employed to develop an online questionnaire web application for mobile devices. The web application was built on the Javascript node.js framework backed by a MySQL database."
+              },
+              {
+                "title": "Continuous Integration consultant @ a Large beverage distributor",
+                "description": "Employed to introduce Agile quality assurance practices, including an automated testing framework and continuous integration (CI) facilitated by CI pipeline software. Responsibilities included setting up the framework and required technologies as well as supporting the local development team in adopting Agile development practices."
+              }
+          ]
+        }
+      }
+    ]
+  },
+
+  "education": {
+    "title": "Education",
+    "items": [
+      {
+        "title": "Doctor of Computer Science @ Macquarie University, Australia",
+        "dataSpan": "2008-2013:",
+        "description": {
+            "title": "The doctoral project, conducted with a MQRES (The Macquarie University Research Excellence Scholarships) involved the analysis of version repositories produced by students during their work on Computer Graphics assignment projects in order to identify student problems and issues with Computer Graphics programming. The analysis involved the development of a software tool for the analysis of version histories (called SCORE) as well as the development of software engineering methods for the machine-analysis of version histories.\n    During this time I was also involved in leading practical and tutorial sessions, as well as lecturing as a casual lecturer."
+        }
+      }
+    ]
+  },
+
+  "skills": {
+    "title": "Skills",
+    "items": []
+  }
+}
