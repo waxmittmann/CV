@@ -1,29 +1,102 @@
 package cvgen.renderers
 
-import cvgen.CV
+import cvgen.{CV, CVRender}
 import cvgen.CV._
-import cvgen.RenderCV.Renderer
 
+import scala.collection.immutable
 import scala.xml.Elem
 
-object ElemRenderer {
-  trait XmlRenderer[S] extends Renderer[S, Elem]
+object ElemRenderer extends CVRender {
+  override type OUT = Elem
 
-  implicit val simpleSectionDescriptionRenderer = new XmlRenderer[SimpleSectionDescription] {
+  type XmlRenderer[S] = OutRenderer[S]
+
+  override lazy val textDivRenderer: ElemRenderer.OutRenderer[TextDiv] = (value: TextDiv) =>
+    <div class={value.styles.mkString(" ")}>
+      {value.text}
+    </div>
+
+  override lazy val divRender: ElemRenderer.OutRenderer[Div] = {
+    case div@ElementDiv(styles, elems) => {
+      println("Rendering elment div")
+      implicitly[OutRenderer[ElementDiv]].render(div)
+    }
+
+    case div@TextDiv(styles, elems) => {
+      println("Rendering text div")
+      implicitly[OutRenderer[TextDiv]].render(div)
+    }
+  }
+
+  override lazy val elemListItemRenderer: ElemRenderer.OutRenderer[ElementListItem] = new OutRenderer[ElementListItem] {
+    val renderElem: ElemRenderer.OutRenderer[Element] = implicitly[OutRenderer[Element]]
+
+    override def render(value: ElementListItem) =
+      <li class={value.styles.mkString(" ")}>renderElem.render(item)</li>
+  }
+
+  override lazy val textListItemRenderer: ElemRenderer.OutRenderer[TextListItem] = (value: TextListItem) =>
+    <li class={value.styles.mkString(" ")}>
+      {value.text}
+    </li>
+
+  override lazy val listItemRenderer: ElemRenderer.OutRenderer[ListItem] = {
+    case d@ElementListItem(_, _) =>
+      implicitly[OutRenderer[ElementListItem]].render(d)
+
+    case d@TextListItem(_, _) =>
+      implicitly[OutRenderer[TextListItem]].render(d)
+  }
+
+  override lazy val jlistRenderer: ElemRenderer.OutRenderer[JList] = (value: JList) =>
+    <ul class={value.styles.mkString(" ")}>
+      {value.items.map { item =>
+      <li>renderElem.render(item)</li>
+    }}
+    </ul>
+
+//  override lazy val elemRenderer: ElemRenderer.OutRenderer[Element] = {
+//    case div: Div => implicitly[OutRenderer[Div]].render(div)
+//
+//    case list@JList(_, _) => implicitly[OutRenderer[JList]].render(list)
+//  }
+
+  override lazy val elementRenderer: ElemRenderer.OutRenderer[Element] = {
+    //case div: Div => implicitly[OutRenderer[Div]].render(div)
+    case div: Div => divRender.render
+
+    case list@JList(_, _) => implicitly[OutRenderer[JList]].render(list)
+  }
+
+  override lazy val elemDivRenderer: ElemRenderer.OutRenderer[ElementDiv] = new OutRenderer[ElementDiv] {
+    val renderElem: ElemRenderer.OutRenderer[Element] = implicitly[OutRenderer[Element]]
+
+    override def render(value: ElementDiv) =
+      <div class={value.styles.mkString(" ")}>
+        {
+        //println(s"Rendering as ${value.elems.map(renderElem.render)}")
+        println(renderElem)
+        value.elems.map(renderElem.render)
+        }
+      </div>
+  }
+
+  implicit val simpleSectionDescriptionRenderer: ElemRenderer.OutRenderer[SimpleSectionDescription] = new XmlRenderer[SimpleSectionDescription] {
     override def render(value: SimpleSectionDescription) =
       <div class="sectionDescription">
         <div>{value.title}</div>
       </div>
   }
 
-  implicit val elemSectionRenderer = new XmlRenderer[ElemSectionDescription] {
-    override def render(value: ElemSectionDescription) =
+  implicit val elemSectionDescriptionRenderer: XmlRenderer[ElementSectionDescription]  = new XmlRenderer[ElementSectionDescription] {
+    val renderer: OutRenderer[Element] = implicitly[XmlRenderer[Element]]
+    override def render(value: ElementSectionDescription) =
       <div class="sectionDescription">
-        {value.description}
+        {renderer.render(value.description)}
       </div>
   }
 
-  implicit val subsectionRenderer = new XmlRenderer[Subsection] {
+  implicit val subsectionRenderer: ElemRenderer.OutRenderer[Subsection]  = new XmlRenderer[Subsection] {
     override def render(value: Subsection) = {
       <div class="mainSubSectionItem">
         <div class="sectionTitle">{value.title}</div>
@@ -32,36 +105,39 @@ object ElemRenderer {
     }
   }
 
-  implicit val withSubsectionsSectionDescription = new XmlRenderer[WithSubsectionsSectionDescription] {
-    val subsectionRenderer = implicitly[XmlRenderer[Subsection]]
+  implicit val withSubsectionsSectionDescriptionRenderer: XmlRenderer[WithSubsectionsSectionDescription] = new XmlRenderer[WithSubsectionsSectionDescription] {
+    val abc: XmlRenderer[Subsection] = implicitly[XmlRenderer[Subsection]]
 
     override def render(value: WithSubsectionsSectionDescription) =
       <div class="sectionDescription">
         <div>{value.title}</div>
-        <div>{value.subsections.map(subsectionRenderer.render)}</div>
+        <div>{
+          val x: immutable.Seq[Elem] = value.subsections.map((s: Subsection) => abc.render(s))
+          x
+        }</div>
       </div>
   }
 
-  implicit val sectionDescriptionRenderer = new XmlRenderer[SectionDescription] {
+  implicit val sectionDescriptionRenderer: XmlRenderer[SectionDescription] = new XmlRenderer[SectionDescription] {
     override def render(value: SectionDescription): Elem = value match {
       case d @ SimpleSectionDescription(_) =>
         implicitly[XmlRenderer[SimpleSectionDescription]].render(d)
 
-      case d @ ElemSectionDescription(_) =>
-        implicitly[XmlRenderer[ElemSectionDescription]].render(d)
+      case d @ ElementSectionDescription(_) =>
+        implicitly[XmlRenderer[ElementSectionDescription]].render(d)
 
       case d @ WithSubsectionsSectionDescription(_, _) =>
         implicitly[XmlRenderer[WithSubsectionsSectionDescription]].render(d)
     }
   }
 
-  implicit val sectionItemRenderer = new XmlRenderer[SectionItem] {
+  implicit val sectionItemRenderer: XmlRenderer[SectionItem] = new XmlRenderer[SectionItem] {
     override def render(value: SectionItem): Elem = value match {
       case SectionItem(title, Some(dateSpan), description)   => datedItem(title, dateSpan, description)
       case SectionItem(title, None, description)             => simpleItem(title, description)
     }
 
-    val renderDescription = implicitly[XmlRenderer[SectionDescription]]
+    val renderDescription: XmlRenderer[SectionDescription] = implicitly[XmlRenderer[SectionDescription]]
 
     def datedItem(title: String, dateSpan: String, description: SectionDescription): Elem =
       <div class="mainSectionItem">
@@ -77,18 +153,18 @@ object ElemRenderer {
       </div>
   }
 
-  implicit val sectionRenderer = new XmlRenderer[Section] {
-    val sectionItemRenderer = implicitly[XmlRenderer[SectionItem]]
+  implicit val sectionRenderer: XmlRenderer[Section] = new XmlRenderer[Section] {
+    val renderer: XmlRenderer[SectionItem] = implicitly[XmlRenderer[SectionItem]]
 
     override def render(value: Section) =
       <div class="mainSection">
         <h1 class="mainSectionHeader">{value.title}</h1>
-        {value.items.map(sectionItemRenderer.render)}
+        {value.items.map(renderer.render)}
       </div>
   }
 
-  implicit val cvRenderer = new XmlRenderer[CV] {
-    val sectionRenderer = implicitly[XmlRenderer[Section]]
+  implicit val cvRenderer: XmlRenderer[CV] = new XmlRenderer[CV] {
+    val renderer: XmlRenderer[Section] = implicitly[XmlRenderer[Section]]
 
     override def render(cvData: CV) = {
       <html>
@@ -117,9 +193,9 @@ object ElemRenderer {
           <div class="contactMe">The best way to reach me is at <a href="mailto:damxam@gmail.com?Subject=Your%20CV" target="_top">damxam@gmail.com</a>, or through <a href="http://au.linkedin.com/in/maximilianwittmann">LinkedIn</a>.</div>
 
           <div class="cvMain">
-            {sectionRenderer.render(cvData.experience)}
-            {sectionRenderer.render(cvData.education)}
-            {sectionRenderer.render(cvData.skills)}
+            {renderer.render(cvData.experience)}
+            {renderer.render(cvData.education)}
+            {renderer.render(cvData.skills)}
           </div>
 
           <div class="footer">You can also check out my <a href="https://github.com/waxmittmann">GitHub account</a> to see what kind of things I've been playing with.</div>
@@ -141,6 +217,4 @@ object ElemRenderer {
       </html>
     }
   }
-
 }
-

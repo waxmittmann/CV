@@ -1,9 +1,8 @@
 package cvgen
 
 import scala.xml.Elem
-
-import cvgen.CV.Section
-import cvgen.RenderCV.Paragraph
+import cvgen.CV._
+import cvgen.RenderCV.{Paragraph, Renderer}
 
 case class CV(
   blurb: Seq[Paragraph],
@@ -11,6 +10,43 @@ case class CV(
   education: Section,
   skills: Section
 )
+
+trait CVRender {
+  type OUT
+  type OutRenderer[S] = Renderer[S, OUT]
+
+  implicit val sectionRenderer: OutRenderer[Section]
+
+  implicit val sectionItemRenderer: OutRenderer[SectionItem]
+
+  implicit val sectionDescriptionRenderer: OutRenderer[SectionDescription]
+
+  implicit val simpleSectionDescriptionRenderer: OutRenderer[SimpleSectionDescription]
+
+  implicit val elemSectionDescriptionRenderer: OutRenderer[ElementSectionDescription]
+
+  implicit val subsectionRenderer: OutRenderer[Subsection]
+
+  implicit val withSubsectionsSectionDescriptionRenderer: OutRenderer[WithSubsectionsSectionDescription]
+
+//  implicit val elemRenderer: OutRenderer[Elem]
+
+  implicit val elementRenderer: OutRenderer[Element]
+
+  implicit val divRender: OutRenderer[Div]
+
+  implicit val elemDivRenderer: OutRenderer[ElementDiv]
+
+  implicit val textDivRenderer: OutRenderer[TextDiv]
+
+  implicit val listItemRenderer: OutRenderer[ListItem]
+
+  implicit val elemListItemRenderer: OutRenderer[ElementListItem]
+
+  implicit val textListItemRenderer: OutRenderer[TextListItem]
+
+  implicit val jlistRenderer: OutRenderer[JList]
+}
 
 object CV {
   case class Section(
@@ -38,9 +74,13 @@ object CV {
     title: String
   ) extends SectionDescription
 
-  case class ElemSectionDescription(
-    description: Elem
+  case class ElementSectionDescription(
+    description: Element
   ) extends SectionDescription
+
+//  case class ElemSectionDescription(
+//    description: Elem
+//  ) extends SectionDescription
 
   case class Subsection(
     title: String,
@@ -51,4 +91,68 @@ object CV {
     title: String,
     subsections: List[Subsection]
   ) extends SectionDescription
+
+  sealed trait Element
+
+  sealed trait Div extends Element
+
+  case class ElementDiv(
+    styles: List[String],
+    elems: List[Element]
+  ) extends Div
+
+  case class TextDiv(
+    styles: List[String],
+    text: String
+  ) extends Div
+
+  sealed trait ListItem
+
+  case class ElementListItem(
+    styles: List[String],
+    elem: Element
+  ) extends ListItem
+
+  case class TextListItem(
+    styles: List[String],
+    text: String
+  ) extends ListItem
+
+  case class JList(
+    styles: List[String],
+    items: List[ListItem]
+  ) extends Element
+
+  /*
+  element:
+    elem div:
+    {
+      "styles": [string],
+      "elems": [element]
+    }
+
+    text div:
+    {
+      "styles": [string],
+      "text": string
+    }
+
+    list:
+    {
+      "items": [element]
+    }
+
+      list-elem:
+      {
+        "styles": [string],
+        "elem": element
+      }
+
+      list-elem:
+      {
+        "styles": [string],
+        "text": string
+      }
+   */
+
 }

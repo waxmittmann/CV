@@ -7,7 +7,7 @@ import cvgen.CV._
 import cvgen.parser.JsonParser.JsonCodecs._
 import cvgen.parser.JsonParser.{JsonCodecs, read}
 
-object JsonParserSpec$ extends Specification {
+object JsonParserSpec extends Specification {
 
   "Reader" should {
     "correctly parse a simple section description" in {
@@ -31,7 +31,7 @@ object JsonParserSpec$ extends Specification {
           |}
         """.stripMargin
 
-      decode[SectionDescription](sectionItem) must beRight(ElemSectionDescription(<test><sometagshere>{"blah"}</sometagshere></test>))
+      decode[SectionDescription](sectionItem) must beRight(ElementSectionDescription(<test><sometagshere>{"blah"}</sometagshere></test>))
     }
 
     "correctly parse a section description with subsections" in {
@@ -124,7 +124,7 @@ object JsonParserSpec$ extends Specification {
           "title",
           List(
             SectionItem.dated("Yesterday - Tomorrow", "My best experience", SimpleSectionDescription("This is the section description")),
-            SectionItem.simple("My best experience", ElemSectionDescription(<h1>{"I am description!"}</h1>))
+            SectionItem.simple("My best experience", ElementSectionDescription(<h1>{"I am description!"}</h1>))
           )
         )
       )
