@@ -1,10 +1,9 @@
 package cvgen.renderers
 
+import scala.xml.Elem
+
 import cvgen.{CV, CVRender}
 import cvgen.CV._
-
-import scala.collection.immutable
-import scala.xml.Elem
 
 object ElemRenderer extends CVRender {
   override type OUT = Elem
@@ -17,49 +16,25 @@ object ElemRenderer extends CVRender {
     </div>
 
   override lazy val elementRenderer: ElemRenderer.OutRenderer[Element] = {
-    //case div: Div => implicitly[OutRenderer[Div]].render(div)
     case div: Div => divRender.render(div)
 
-//    case list@JList(_, _) => implicitly[OutRenderer[JList]].render(list)
     case list@JList(_, _) => jlistRenderer.render(list)
   }
 
-  override lazy val elemDivRenderer: ElemRenderer.OutRenderer[ElementDiv] = new OutRenderer[ElementDiv] {
-//    val renderElem: ElemRenderer.OutRenderer[Element] = implicitly[OutRenderer[Element]]
-//    val renderElem: ElemRenderer.OutRenderer[Element] = implicitly[OutRenderer[Element]]
-
-    override def render(value: ElementDiv) =
-      <div class={value.styles.mkString(" ")}>
-        {
-        //println(s"Rendering as ${value.elems.map(renderElem.render)}")
-//        println(renderElem)
-        value.elems.map(elementRenderer.render)
-        }
-      </div>
-  }
+  override lazy val elemDivRenderer: ElemRenderer.OutRenderer[ElementDiv] = (value: ElementDiv) =>
+    <div class={value.styles.mkString(" ")}>
+      {value.elems.map(elementRenderer.render)}
+    </div>
 
 
   override lazy val divRender: ElemRenderer.OutRenderer[Div] = {
-    case div@ElementDiv(styles, elems) => {
-      println("Rendering elment div")
-//      implicitly[OutRenderer[ElementDiv]].render(div)
-      elemDivRenderer.render(div)
-    }
+    case div: ElementDiv => {elemDivRenderer.render(div)}
 
-    case div@TextDiv(styles, elems) => {
-      println("Rendering text div")
-//      implicitly[OutRenderer[TextDiv]].render(div)
-      textDivRenderer.render(div)
-    }
+    case div: TextDiv => {textDivRenderer.render(div)}
   }
 
-  override lazy val elemListItemRenderer: ElemRenderer.OutRenderer[ElementListItem] = new OutRenderer[ElementListItem] {
-//    val renderElem: ElemRenderer.OutRenderer[Element] = implicitly[OutRenderer[Element]]
-
-    override def render(value: ElementListItem) =
-//      <li class={value.styles.mkString(" ")}>renderElem.render(item)</li>
-      <li class={value.styles.mkString(" ")}>elementRenderer.render(item)</li>
-  }
+  override lazy val elemListItemRenderer: ElemRenderer.OutRenderer[ElementListItem] = (value: ElementListItem) =>
+    <li class={value.styles.mkString(" ")}>elementRenderer.render(item)</li>
 
   override lazy val textListItemRenderer: ElemRenderer.OutRenderer[TextListItem] = (value: TextListItem) =>
     <li class={value.styles.mkString(" ")}>
@@ -68,70 +43,40 @@ object ElemRenderer extends CVRender {
 
   override lazy val listItemRenderer: ElemRenderer.OutRenderer[ListItem] = {
     case d@ElementListItem(_, _) =>
-//      implicitly[OutRenderer[ElementListItem]].render(d)
       elemListItemRenderer.render(d)
 
     case d@TextListItem(_, _) =>
-//      implicitly[OutRenderer[TextListItem]].render(d)
       textListItemRenderer.render(d)
   }
 
   override lazy val jlistRenderer: ElemRenderer.OutRenderer[JList] = (value: JList) =>
-//    <li>{listItemRenderer.render(item)}</li>
     <ul class={value.styles.mkString(" ")}>
       {value.items.map { item: ListItem =>
-      {listItemRenderer.render(item)}
-    }}
+        {listItemRenderer.render(item)}
+      }}
     </ul>
 
-//  override lazy val elemRenderer: ElemRenderer.OutRenderer[Element] = {
-//    case div: Div => implicitly[OutRenderer[Div]].render(div)
-//
-//    case list@JList(_, _) => implicitly[OutRenderer[JList]].render(list)
-//  }
+  implicit val simpleSectionDescriptionRenderer: ElemRenderer.OutRenderer[SimpleSectionDescription] = (value: SimpleSectionDescription) =>
+    <div class="sectionDescription">
+      <div>
+        {value.title}
+      </div>
+    </div>
 
-//  override lazy val elementRenderer: ElemRenderer.OutRenderer[Element] = {
-//    //case div: Div => implicitly[OutRenderer[Div]].render(div)
-//    case div: Div => divRender.render(div)
-//
-//    case list@JList(_, _) => implicitly[OutRenderer[JList]].render(list)
-//  }
+  implicit val elemSectionDescriptionRenderer: XmlRenderer[ElementSectionDescription]  = (value: ElementSectionDescription) =>
+    <div class="sectionDescription">
+      {elementRenderer.render(value.description)}
+    </div>
 
-//  override lazy val elemDivRenderer: ElemRenderer.OutRenderer[ElementDiv] = new OutRenderer[ElementDiv] {
-//    val renderElem: ElemRenderer.OutRenderer[Element] = implicitly[OutRenderer[Element]]
-//
-//    override def render(value: ElementDiv) =
-//      <div class={value.styles.mkString(" ")}>
-//        {
-//        //println(s"Rendering as ${value.elems.map(renderElem.render)}")
-//        println(renderElem)
-//        value.elems.map(renderElem.render)
-//        }
-//      </div>
-//  }
-
-  implicit val simpleSectionDescriptionRenderer: ElemRenderer.OutRenderer[SimpleSectionDescription] = new XmlRenderer[SimpleSectionDescription] {
-    override def render(value: SimpleSectionDescription) =
+  implicit val subsectionRenderer: ElemRenderer.OutRenderer[Subsection]  = (value: Subsection) => {
+    <div class="mainSubSectionItem">
+      <div class="sectionTitle">
+        {value.title}
+      </div>
       <div class="sectionDescription">
-        <div>{value.title}</div>
+        {value.description}
       </div>
-  }
-
-  implicit val elemSectionDescriptionRenderer: XmlRenderer[ElementSectionDescription]  = new XmlRenderer[ElementSectionDescription] {
-//    val renderer: OutRenderer[Element] = implicitly[XmlRenderer[Element]]
-    override def render(value: ElementSectionDescription) =
-      <div class="sectionDescription">
-        {elementRenderer.render(value.description)}
-      </div>
-  }
-
-  implicit val subsectionRenderer: ElemRenderer.OutRenderer[Subsection]  = new XmlRenderer[Subsection] {
-    override def render(value: Subsection) = {
-      <div class="mainSubSectionItem">
-        <div class="sectionTitle">{value.title}</div>
-        <div class="sectionDescription">{value.description}</div>
-      </div>
-    }
+    </div>
   }
 
   implicit val withSubsectionsSectionDescriptionRenderer: XmlRenderer[WithSubsectionsSectionDescription] = new XmlRenderer[WithSubsectionsSectionDescription] {
@@ -141,23 +86,20 @@ object ElemRenderer extends CVRender {
       <div class="sectionDescription">
         <div>{value.title}</div>
         <div>{
-          val x: immutable.Seq[Elem] = value.subsections.map((s: Subsection) => abc.render(s))
-          x
+          value.subsections.map((s: Subsection) => abc.render(s))
         }</div>
       </div>
   }
 
-  implicit val sectionDescriptionRenderer: XmlRenderer[SectionDescription] = new XmlRenderer[SectionDescription] {
-    override def render(value: SectionDescription): Elem = value match {
-      case d @ SimpleSectionDescription(_) =>
-        implicitly[XmlRenderer[SimpleSectionDescription]].render(d)
+  implicit val sectionDescriptionRenderer: XmlRenderer[SectionDescription] = {
+    case d@SimpleSectionDescription(_) =>
+      implicitly[XmlRenderer[SimpleSectionDescription]].render(d)
 
-      case d @ ElementSectionDescription(_) =>
-        implicitly[XmlRenderer[ElementSectionDescription]].render(d)
+    case d@ElementSectionDescription(_) =>
+      implicitly[XmlRenderer[ElementSectionDescription]].render(d)
 
-      case d @ WithSubsectionsSectionDescription(_, _) =>
-        implicitly[XmlRenderer[WithSubsectionsSectionDescription]].render(d)
-    }
+    case d@WithSubsectionsSectionDescription(_, _) =>
+      implicitly[XmlRenderer[WithSubsectionsSectionDescription]].render(d)
   }
 
   implicit val sectionItemRenderer: XmlRenderer[SectionItem] = new XmlRenderer[SectionItem] {
