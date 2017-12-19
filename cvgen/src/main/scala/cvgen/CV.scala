@@ -1,6 +1,5 @@
 package cvgen
 
-import scala.xml.Elem
 import cvgen.CV._
 import cvgen.RenderCV.{Paragraph, Renderer}
 
@@ -28,8 +27,6 @@ trait CVRender {
   implicit val subsectionRenderer: OutRenderer[Subsection]
 
   implicit val withSubsectionsSectionDescriptionRenderer: OutRenderer[WithSubsectionsSectionDescription]
-
-//  implicit val elemRenderer: OutRenderer[Elem]
 
   implicit val elementRenderer: OutRenderer[Element]
 
@@ -78,10 +75,6 @@ object CV {
     description: Element
   ) extends SectionDescription
 
-//  case class ElemSectionDescription(
-//    description: Elem
-//  ) extends SectionDescription
-
   case class Subsection(
     title: String,
     description: String
@@ -122,37 +115,4 @@ object CV {
     styles: List[String],
     items: List[ListItem]
   ) extends Element
-
-  /*
-  element:
-    elem div:
-    {
-      "styles": [string],
-      "elems": [element]
-    }
-
-    text div:
-    {
-      "styles": [string],
-      "text": string
-    }
-
-    list:
-    {
-      "items": [element]
-    }
-
-      list-elem:
-      {
-        "styles": [string],
-        "elem": element
-      }
-
-      list-elem:
-      {
-        "styles": [string],
-        "text": string
-      }
-   */
-
 }

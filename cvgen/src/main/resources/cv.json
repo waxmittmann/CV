@@ -27,7 +27,28 @@
         "title": "Software Developer @ Covata Australia",
         "dateSpan": "October 2014 - Now",
         "description": {
-          "description": "<div>\nEmployed as a full-stack software developer, responsible for developing a security application using a Java + Scala + Angular + Spring stack in an Agile team. In addition to software development skills, the role also requires aspects of a Business Analyst, with all team members expected to contribute to the ongoing design and improvement of the product.\nSome highlights so far:\n<ul>\n<li>Won our spike day for the development of an approach to non-destructively reorganizing data through alternate storage (currently serialization, but optimally use of a NoSQL database) of database views.</li>\n<li>Led the development of our (multi-client RESTful web-API) product's internationalization framework.</li>\n</ul>\n</div>"
+          "description": {
+            "styles": [],
+            "elems": [
+              {
+                "styles": [],
+                "text": "Employed as a full-stack software developer, responsible for developing a security application using a Java + Scala + Angular + Spring stack in an Agile team. In addition to software development skills, the role also requires aspects of a Business Analyst, with all team members expected to contribute to the ongoing design and improvement of the product.\nSome highlights:"
+              },
+              {
+                "styles": [],
+                "items": [
+                  {
+                    "styles": [],
+                    "text": "Won our spike day for the development of an approach to non-destructively reorganizing data through alternate storage (currently serialization, but optimally use of a NoSQL database) of database views."
+                  },
+                  {
+                    "styles": [],
+                    "text": "Led the development of our (multi-client RESTful web-API) product's internationalization framework."
+                  }
+                ]
+              }
+            ]
+          }
         }
       },
 
@@ -66,7 +87,7 @@
         "title": "Doctor of Computer Science @ Macquarie University, Australia",
         "dataSpan": "2008-2013:",
         "description": {
-            "title": "The doctoral project, conducted with a MQRES (The Macquarie University Research Excellence Scholarships) involved the analysis of version repositories produced by students during their work on Computer Graphics assignment projects in order to identify student problems and issues with Computer Graphics programming. The analysis involved the development of a software tool for the analysis of version histories (called SCORE) as well as the development of software engineering methods for the machine-analysis of version histories.\n    During this time I was also involved in leading practical and tutorial sessions, as well as lecturing as a casual lecturer."
+          "title": "The doctoral project, conducted with a MQRES (The Macquarie University Research Excellence Scholarships) involved the analysis of version repositories produced by students during their work on Computer Graphics assignment projects in order to identify student problems and issues with Computer Graphics programming. The analysis involved the development of a software tool for the analysis of version histories (called SCORE) as well as the development of software engineering methods for the machine-analysis of version histories.\n    During this time I was also involved in leading practical and tutorial sessions, as well as lecturing as a casual lecturer."
         }
       },
       {
@@ -92,13 +113,221 @@
       {
         "title": "Programming Languages",
         "description": {
-          "description": "<div class=\"mainSectionDescription\">\n<div class=\"mainSubSectionItem\">\n<div class=\"sectionTitle\">Expert (2+ years full-time experience):</div>\n<ul class=\"skillsPanel\">\n<li class=\"skill\">Java</li>\n<li class=\"skill\">Scala</li>\n</ul>\n</div>\n<div class=\"mainSubSectionItem\">\n<div class=\"sectionTitle\">Proficient (1+ year full-time experience):</div>\n<ul class=\"skillsPanel\">\n<li class=\"skill\">Python</li>\n<li class=\"skill\">Javascript</li>\n<li class=\"skill\">Html/CSS/Sass</li>\n<li class=\"skill\">SQL</li>\n</ul>\n</div>\n<div class=\"mainSubSectionItem\">\n<div class=\"sectionTitle\">Some exposure (I've worked with this before):</div>\n<ul class=\"skillsPanel\">\n<li class=\"skill\">C/C++</li>\n<li class=\"skill\">Clojure</li>\n<li class=\"skill\">Haskell</li>\n</ul>\n</div>\n</div>"
+          "description": {
+            "styles": ["mainSectionDescription"],
+            "elems": [
+              {
+                "styles": ["mainSubSectionItem"],
+                "elems": [
+                  {
+                    "styles": ["sectionTitle"],
+                    "text": "Expert (2+ years full-time experience):"
+                  },
+                  {
+                    "styles": ["skillsPanel"],
+                    "items": [
+                      {
+                        "styles": ["skill"],
+                        "text": "Java"
+                      },
+                      {
+                        "styles": ["skill"],
+                        "text": "Scala"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "styles": ["mainSubSectionItem"],
+                "elems": [
+                  {
+                    "styles": ["sectionTitle"],
+                    "text": "Proficient (1+ year full-time experience):"
+                  },
+                  {
+                    "styles": ["skillsPanel"],
+                    "items": [
+                      {
+                        "styles": ["skill"],
+                        "text": "Python"
+                      },
+                      {
+                        "styles": ["skill"],
+                        "text": "Javascript"
+                      },
+                      {
+                        "styles": ["skill"],
+                        "text": "Html/CSS/Sass"
+                      },
+                      {
+                        "styles": ["skill"],
+                        "text": "SQL"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "styles": ["mainSubSectionItem"],
+                "elems": [
+                  {
+                    "styles": ["sectionTitle"],
+                    "text": "Some exposure (I've worked with this before):"
+                  },
+                  {
+                    "styles": ["skillsPanel"],
+                    "items": [
+                      {
+                        "styles": ["skill"],
+                        "text": "C/C++"
+                      },
+                      {
+                        "styles": ["skill"],
+                        "text": "Clojure"
+                      },
+                      {
+                        "styles": ["skill"],
+                        "text": "Haskell"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
         }
       },
       {
-        "title": "Frameworks and Technologies",
+        "title": "Programming Languages",
         "description": {
-          "description": "<div class=\"mainSectionDescription\">\n<div class=\"mainSubSectionItem\">\n<div class=\"sectionTitle\">Expert (2+ years full-time experience):</div>\n<ul class=\"skillsPanel\">\n<li class=\"skill\">Git/Sourcetree</li>\n</ul>\n</div>\n<div class=\"mainSubSectionItem\">\n<div class=\"sectionTitle\">Proficient (1+ year full-time experience):</div>\n<ul class=\"skillsPanel\">\n<li class=\"skill\">Hadoop with Cascading / Scalding</li>\n<li class=\"skill\">AWS</li>\n<li class=\"skill\">Play</li>\n<li class=\"skill\">Spring</li>\n<li class=\"skill\">Angular</li>\n</ul>\n</div>\n<div class=\"mainSubSectionItem\">\n<div class=\"sectionTitle\">Some exposure:</div>\n<ul class=\"skillsPanel\">\n<li class=\"skill\">Spark</li>\n<li class=\"skill\">Akka</li>\n<li class=\"skill\">Ansible</li>\n<li class=\"skill\">Node.js</li>\n</ul>\n</div>\n</div>\n"
+          "description": {
+            "styles": [
+              "mainSectionDescription"
+            ],
+            "elems": [
+              {
+                "styles": [
+                  "mainSubSectionItem"
+                ],
+                "elems": [
+                  {
+                    "styles": [
+                      "sectionTitle"
+                    ],
+                    "text": "Expert (2+ years full-time experience):"
+                  },
+                  {
+                    "styles": [
+                      "skillsPanel"
+                    ],
+                    "items": [
+                      {
+                        "styles": [
+                          "skill"
+                        ],
+                        "text": "Git"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "styles": [
+                  "mainSubSectionItem"
+                ],
+                "elems": [
+                  {
+                    "styles": [
+                      "sectionTitle"
+                    ],
+                    "text": "Proficient (1+ year full-time experience):"
+                  },
+                  {
+                    "styles": [
+                      "skillsPanel"
+                    ],
+                    "items": [
+                      {
+                        "styles": [
+                          "skill"
+                        ],
+                        "text": "Cascading/Scalding"
+                      },
+                      {
+                        "styles": [
+                          "skill"
+                        ],
+                        "text": "AWS"
+                      },
+                      {
+                        "styles": [
+                          "skill"
+                        ],
+                        "text": "Http4s"
+                      },
+                      {
+                        "styles": [
+                          "skill"
+                        ],
+                        "text": "Play Framework"
+                      },
+                      {
+                        "styles": [
+                          "skill"
+                        ],
+                        "text": "Spring"
+                      },
+                      {
+                        "styles": [
+                          "skill"
+                        ],
+                        "text": "Angular"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "styles": [
+                  "mainSubSectionItem"
+                ],
+                "elems": [
+                  {
+                    "styles": [
+                      "sectionTitle"
+                    ],
+                    "text": "Some exposure (I've worked with this before):"
+                  },
+                  {
+                    "styles": [
+                      "skillsPanel"
+                    ],
+                    "items": [
+                      {
+                        "styles": [
+                          "skill"
+                        ],
+                        "text": "Spark"
+                      },
+                      {
+                        "styles": [
+                          "skill"
+                        ],
+                        "text": "Akka"
+                      },
+                      {
+                        "styles": [
+                          "skill"
+                        ],
+                        "text": "Ansible"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
         }
       }
     ]
