@@ -25,12 +25,16 @@ import org.odftoolkit.simple.text.list.{ List => OdtList }
 
 
 class WordRenderer extends StatefulCVRender {
-//  override lazy type OUT = WordDocument
+  def render(cv: CV) = cvRenderer.render(cv, WordRendererState(None, None))._1
 
-  case class WordRendererState(
+  //  override lazy type OUT = WordDocument
+
+  case class WordRendererState private(
     curList: Option[OdtList],
     curParagraph: Option[Paragraph]
   ) {
+    def finishList: WordRendererState = this.copy(curList = None)
+
     val document: TextDocument = TextDocument.newTextDocument()
 
     def addList = this.copy(curList = Some(document.addList()))
@@ -77,9 +81,11 @@ class WordRenderer extends StatefulCVRender {
 
   override lazy implicit val elemSectionDescriptionRenderer: OutRenderer[CV.ElementSectionDescription] =
     (value: ElementSectionDescription, state: WordRendererState) => {
-      System.err.println("Elem section descriptions are no longer supported")
-      //value.description.
-      (state, ())
+      value.description match {
+        case d: Div => divRender.render(d, state)
+
+        case l: JList => jlistRenderer.render(l, state)
+      }
     }
 
   override lazy implicit val subsectionRenderer: OutRenderer[CV.Subsection] =
@@ -132,20 +138,23 @@ class WordRenderer extends StatefulCVRender {
 
   override lazy implicit val elemListItemRenderer: OutRenderer[CV.ElementListItem] =
     (value: ElementListItem, state: WordRendererState) => {
-      // Todo: Add to list. Hmm.
       elementRenderer.render(value.elem, state.addList)
     }
 
   override lazy implicit val textListItemRenderer: OutRenderer[CV.TextListItem] =
     (value: TextListItem, state: WordRendererState) => {
-      state.document.addParagraph(value.text)
+      println(s"Rendering list item ${value.text}")
+      state.curList.get.addItem(value.text)
+      //state.document.addParagraph(value.text)
       (state, ())
     }
 
   override lazy implicit val jlistRenderer: OutRenderer[CV.JList] =
     (value: JList, state: WordRendererState) => {
-      value.items.foreach(e => listItemRenderer.render(e, state))
-      (state, ())
+      val stateWithList = state.addList
+      println("Rendering jlist")
+      value.items.foreach(e => listItemRenderer.render(e, stateWithList))
+      (stateWithList.finishList, ())
     }
 
   implicit val cvRenderer: OutRenderer[CV] = new OutRenderer[CV] {

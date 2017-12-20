@@ -17,12 +17,13 @@ object GenCV {
     val renderedCv: Either[circe.Error, Elem] = for {
       cv <- JsonParser.readFile("./src/main/resources/cv.json")
     } yield {
-      // Render word
-      val wordCv = (new WordRenderer())
-      wordCv.cvRenderer.render(cv)
-      wordCv.write("../CV.odt")
 
-      //println(cv)
+      // Render word
+      val wordCv = new WordRenderer()
+      val renderedDoc = wordCv.render(cv)
+      renderedDoc.write("../CV.odt")
+
+      println(cv)
       cv.render[Elem]
     }
 
