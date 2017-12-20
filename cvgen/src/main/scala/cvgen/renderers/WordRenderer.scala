@@ -4,10 +4,10 @@ import cvgen.CV._
 import cvgen.renderers.ElemRenderer.XmlRenderer
 import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy
 import org.apache.poi.xwpf.usermodel.XWPFDocument
-import cvgen.{CV, CVRender}
+import cvgen.{CV, CVRender, StatefulCVRender}
 import org.apache.poi.wp.usermodel.Paragraph
 import org.odftoolkit.simple.TextDocument
-
+import org.odftoolkit.simple.text.list.{ List => OdtList }
 //class WordDocument protected(
 //    val curParagraph: Option[Paragraph] = None
 //) {
@@ -24,133 +24,156 @@ import org.odftoolkit.simple.TextDocument
 //}
 
 
-class WordRenderer extends CVRender {
+class WordRenderer extends StatefulCVRender {
 //  override lazy type OUT = WordDocument
+
+  case class WordRendererState(
+    curList: Option[OdtList],
+    curParagraph: Option[Paragraph]
+  ) {
+    val document: TextDocument = TextDocument.newTextDocument()
+
+    def addList = this.copy(curList = Some(document.addList()))
+
+    def write(outpath: String): Unit = {
+      document.save(outpath)
+    }
+  }
+
+  override type STATE = WordRendererState
   override type OUT = Unit
 
 //  val document: XWPFDocument = new XWPFDocument()
-  val document: TextDocument = TextDocument.newTextDocument()
+
+    //document.addList()
 
   override lazy implicit val sectionRenderer: OutRenderer[CV.Section] =
-    (value: CV.Section) => {
-      document.addParagraph(value.title)
-      value.items.foreach(sectionItemRenderer.render)
+    (value: CV.Section, state: WordRendererState) => {
+      state.document.addParagraph(value.title)
+      value.items.foreach(i => sectionItemRenderer.render(i, state))
 //      document.createvalue.title
+      (state, ())
     }
 
   override lazy implicit val sectionItemRenderer: OutRenderer[CV.SectionItem] =
-    (value: CV.SectionItem) => {
-      document.addParagraph(value.title)
-      value.dateSpan.foreach(document.addParagraph)
-      sectionDescriptionRenderer.render(value.description)
+    (value: CV.SectionItem, state: WordRendererState) => {
+      state.document.addParagraph(value.title)
+      value.dateSpan.foreach(state.document.addParagraph)
+      sectionDescriptionRenderer.render(value.description, state)
     }
 
   override lazy implicit val sectionDescriptionRenderer: OutRenderer[CV.SectionDescription] =
-    (value: SectionDescription) => value match {
-      case d: SimpleSectionDescription => simpleSectionDescriptionRenderer.render(d)
-      case d: ElementSectionDescription => elemSectionDescriptionRenderer.render(d)
-      case d: WithSubsectionsSectionDescription => withSubsectionsSectionDescriptionRenderer.render(d)
+    (value: SectionDescription, state: WordRendererState) => value match {
+      case d: SimpleSectionDescription => simpleSectionDescriptionRenderer.render(d, state)
+      case d: ElementSectionDescription => elemSectionDescriptionRenderer.render(d, state)
+      case d: WithSubsectionsSectionDescription => withSubsectionsSectionDescriptionRenderer.render(d, state)
     }
 
   override lazy implicit val simpleSectionDescriptionRenderer: OutRenderer[CV.SimpleSectionDescription] =
-    (value: SimpleSectionDescription) => {
-      document.addParagraph(value.title)
+    (value: SimpleSectionDescription, state: WordRendererState) => {
+      state.document.addParagraph(value.title)
+      (state, ())
     }
 
   override lazy implicit val elemSectionDescriptionRenderer: OutRenderer[CV.ElementSectionDescription] =
-    (value: ElementSectionDescription) => {
+    (value: ElementSectionDescription, state: WordRendererState) => {
       System.err.println("Elem section descriptions are no longer supported")
       //value.description.
+      (state, ())
     }
 
   override lazy implicit val subsectionRenderer: OutRenderer[CV.Subsection] =
-    (value: Subsection) => {
-      document.addParagraph(value.title)
-      document.addParagraph(value.description)
+    (value: Subsection, state: WordRendererState) => {
+      state.document.addParagraph(value.title)
+      state.document.addParagraph(value.description)
+      (state, ())
     }
 
   override lazy implicit val withSubsectionsSectionDescriptionRenderer: OutRenderer[CV.WithSubsectionsSectionDescription] =
-    (value: WithSubsectionsSectionDescription) => {
-      document.addParagraph(value.title)
+    (value: WithSubsectionsSectionDescription, state: WordRendererState) => {
+      state.document.addParagraph(value.title)
       value.subsections.foreach { subsection =>
-        document.addParagraph(subsection.title)
-        document.addParagraph(subsection.description)
+        state.document.addParagraph(subsection.title)
+        state.document.addParagraph(subsection.description)
       }
+      (state, ())
     }
 
   override lazy implicit val elementRenderer: OutRenderer[CV.Element] =
-    (value: Element) => value match {
-      case d: Div   => divRender.render(d)
-      case l: JList => jlistRenderer.render(l)
+    (value: Element, state: WordRendererState) => value match {
+      case d: Div   => divRender.render(d, state)
+      case l: JList => jlistRenderer.render(l, state)
     }
 
   override lazy implicit val divRender: OutRenderer[CV.Div] =
-    (value: Div) => value match {
-      case d: ElementDiv => elemDivRenderer.render(d)
-      case d: TextDiv  => textDivRenderer.render(d)
+    (value: Div, state: WordRendererState) => value match {
+      case d: ElementDiv => elemDivRenderer.render(d, state)
+      case d: TextDiv  => textDivRenderer.render(d, state)
     }
 
   override lazy implicit val elemDivRenderer: OutRenderer[CV.ElementDiv] =
-    (value: ElementDiv) => {
+    (value: ElementDiv, state: WordRendererState) => {
       // Todo: Styles
-      value.elems.foreach(elementRenderer.render)
+      value.elems.foreach(e => elementRenderer.render(e, state))
+      (state, ())
     }
 
   override lazy implicit val textDivRenderer: OutRenderer[CV.TextDiv] =
-    (value: TextDiv) => {
-      document.addParagraph(value.text)
+    (value: TextDiv, state: WordRendererState) => {
+      state.document.addParagraph(value.text)
+      (state, ())
     }
 
   override lazy implicit val listItemRenderer: OutRenderer[CV.ListItem] =
-    (value: ListItem) => value match {
-      case li: ElementListItem => elemListItemRenderer.render(li)
-      case li: TextListItem => textListItemRenderer.render(li)
+    (value: ListItem, state: WordRendererState) => value match {
+      case li: ElementListItem => elemListItemRenderer.render(li, state)
+      case li: TextListItem => textListItemRenderer.render(li, state)
     }
 
   override lazy implicit val elemListItemRenderer: OutRenderer[CV.ElementListItem] =
-    (value: ElementListItem) => {
+    (value: ElementListItem, state: WordRendererState) => {
       // Todo: Add to list. Hmm.
-      elementRenderer.render(value.elem)
+      elementRenderer.render(value.elem, state.addList)
     }
 
   override lazy implicit val textListItemRenderer: OutRenderer[CV.TextListItem] =
-    (value: TextListItem) => {
-      document.addParagraph(value.text)
+    (value: TextListItem, state: WordRendererState) => {
+      state.document.addParagraph(value.text)
+      (state, ())
     }
 
   override lazy implicit val jlistRenderer: OutRenderer[CV.JList] =
-    (value: JList) => {
-      value.items.foreach(listItemRenderer.render)
+    (value: JList, state: WordRendererState) => {
+      value.items.foreach(e => listItemRenderer.render(e, state))
+      (state, ())
     }
 
   implicit val cvRenderer: OutRenderer[CV] = new OutRenderer[CV] {
     val renderer: OutRenderer[Section] = implicitly[OutRenderer[Section]]
 
-    override def render(cvData: CV) = {
+    override def render(cvData: CV, state: WordRendererState) = {
 
-      document.addParagraph("Maximilian Wittmann, PhD")
+      state.document.addParagraph("Maximilian Wittmann, PhD")
 
+      val s1 = state.addList
+      s1.curList.get.addItem("Doctor of Computer Science")
+      s1.curList.get.addItem("Bachelor of Computer Science with First Class Honors")
 
-      val li = document.addList()
-      li.addItem("Doctor of Computer Science")
-      li.addItem("Bachelor of Computer Science with First Class Honors")
+      cvData.blurb.map(s1.document.addParagraph)
 
-      cvData.blurb.map(document.addParagraph)
-
-      document.addParagraph("""The best way to reach me is at <a href="mailto:damxam@gmail.com?Subject=Your%20CV" target="_top">damxam@gmail.com</a>, or through <a href="http://au.linkedin.com/in/maximilianwittmann">LinkedIn</a>.</div>""")
-
-
-      {renderer.render(cvData.experience)}
-      {renderer.render(cvData.education)}
-      {renderer.render(cvData.skills)}
+      s1.document.addParagraph("""The best way to reach me is at <a href="mailto:damxam@gmail.com?Subject=Your%20CV" target="_top">damxam@gmail.com</a>, or through <a href="http://au.linkedin.com/in/maximilianwittmann">LinkedIn</a>.</div>""")
 
 
-     document.addParagraph("""<div class="footer">You can also check out my <a href="https://github.com/waxmittmann">GitHub account</a> to see what kind of things I've been playing with.</div>""")
-      ()
+      val s2 = renderer.render(cvData.experience, s1)._1
+      val s3 = renderer.render(cvData.education, s2)._1
+      val s4 = renderer.render(cvData.skills, s3)._1
+
+      s4.document.addParagraph("""<div class="footer">You can also check out my <a href="https://github.com/waxmittmann">GitHub account</a> to see what kind of things I've been playing with.</div>""")
+      (s4, ())
     }
   }
 
-  def write(outpath: String): Unit = {
-    document.save(outpath)
-  }
+//  def write(outpath: String): Unit = {
+//    document.save(outpath)
+//  }
 }

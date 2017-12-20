@@ -1,7 +1,7 @@
 package cvgen
 
 import cvgen.CV._
-import cvgen.RenderCV.{Paragraph, Renderer}
+import cvgen.RenderCV.{Paragraph, Renderer, StatefulRenderer}
 
 case class CV(
   blurb: Seq[Paragraph],
@@ -46,6 +46,46 @@ trait CVRender {
 
   implicit val cvRenderer: OutRenderer[CV]
 }
+
+trait StatefulCVRender {
+  type OUT
+  type STATE
+
+  type OutRenderer[S] = StatefulRenderer[S, STATE, OUT]
+
+  implicit val sectionRenderer: OutRenderer[Section]
+
+  implicit val sectionItemRenderer: OutRenderer[SectionItem]
+
+  implicit val sectionDescriptionRenderer: OutRenderer[SectionDescription]
+
+  implicit val simpleSectionDescriptionRenderer: OutRenderer[SimpleSectionDescription]
+
+  implicit val elemSectionDescriptionRenderer: OutRenderer[ElementSectionDescription]
+
+  implicit val subsectionRenderer: OutRenderer[Subsection]
+
+  implicit val withSubsectionsSectionDescriptionRenderer: OutRenderer[WithSubsectionsSectionDescription]
+
+  implicit val elementRenderer: OutRenderer[Element]
+
+  implicit val divRender: OutRenderer[Div]
+
+  implicit val elemDivRenderer: OutRenderer[ElementDiv]
+
+  implicit val textDivRenderer: OutRenderer[TextDiv]
+
+  implicit val listItemRenderer: OutRenderer[ListItem]
+
+  implicit val elemListItemRenderer: OutRenderer[ElementListItem]
+
+  implicit val textListItemRenderer: OutRenderer[TextListItem]
+
+  implicit val jlistRenderer: OutRenderer[JList]
+
+  implicit val cvRenderer: OutRenderer[CV]
+}
+
 
 object CV {
   case class Section(
