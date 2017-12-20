@@ -43,6 +43,8 @@ trait CVRender {
   implicit val textListItemRenderer: OutRenderer[TextListItem]
 
   implicit val jlistRenderer: OutRenderer[JList]
+
+  implicit val cvRenderer: OutRenderer[CV]
 }
 
 object CV {

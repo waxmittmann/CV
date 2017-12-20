@@ -7,6 +7,7 @@ import cvgen.CV._
 import cvgen.RenderCV._
 import cvgen.parser.JsonParser
 import cvgen.renderers.ElemRenderer._
+import cvgen.renderers.WordRenderer
 import io.circe
 
 object GenCV {
@@ -16,6 +17,11 @@ object GenCV {
     val renderedCv: Either[circe.Error, Elem] = for {
       cv <- JsonParser.readFile("./src/main/resources/cv.json")
     } yield {
+      // Render word
+      val wordCv = (new WordRenderer())
+      wordCv.cvRenderer.render(cv)
+      wordCv.write("../CV.odt")
+
       //println(cv)
       cv.render[Elem]
     }

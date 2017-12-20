@@ -23,16 +23,16 @@ object JsonParserSpec extends Specification {
       decode[SectionDescription](sectionItem) must beRight(SimpleSectionDescription("This is the section description"))
     }
 
-    "correctly parse an elem section description" in {
-      val sectionItem =
-        """
-          |{
-          |   "description": "<test><sometagshere>blah</sometagshere></test>"
-          |}
-        """.stripMargin
-
-      decode[SectionDescription](sectionItem) must beRight(ElementSectionDescription(<test><sometagshere>{"blah"}</sometagshere></test>))
-    }
+//    "correctly parse an elem section description" in {
+//      val sectionItem =
+//        """
+//          |{
+//          |   "description": "<test><sometagshere>blah</sometagshere></test>"
+//          |}
+//        """.stripMargin
+//
+//      decode[SectionDescription](sectionItem) must beRight(ElementSectionDescription(<test><sometagshere>{"blah"}</sometagshere></test>))
+//    }
 
     "correctly parse a section description with subsections" in {
       val sectionItem =
@@ -96,39 +96,39 @@ object JsonParserSpec extends Specification {
       )
     }
 
-    "correctly parse a section" in {
-      val section =
-        """
-          |{
-          |     "header": "title",
-          |     "items": [
-          |       {
-          |         "title": "My best experience",
-          |         "dateSpan": "Yesterday - Tomorrow",
-          |         "description": {
-          |           "title": "This is the section description"
-          |         }
-          |       },
-          |       {
-          |         "title": "My best experience",
-          |         "description": {
-          |           "description": "<h1>I am description!</h1>"
-          |         }
-          |       }
-          |     ]
-          |}
-        """.stripMargin
-
-      decode[Section](section) must beRight(
-        Section(
-          "title",
-          List(
-            SectionItem.dated("Yesterday - Tomorrow", "My best experience", SimpleSectionDescription("This is the section description")),
-            SectionItem.simple("My best experience", ElementSectionDescription(<h1>{"I am description!"}</h1>))
-          )
-        )
-      )
-    }
+//    "correctly parse a section" in {
+//      val section =
+//        """
+//          |{
+//          |     "header": "title",
+//          |     "items": [
+//          |       {
+//          |         "title": "My best experience",
+//          |         "dateSpan": "Yesterday - Tomorrow",
+//          |         "description": {
+//          |           "title": "This is the section description"
+//          |         }
+//          |       },
+//          |       {
+//          |         "title": "My best experience",
+//          |         "description": {
+//          |           "description": "<h1>I am description!</h1>"
+//          |         }
+//          |       }
+//          |     ]
+//          |}
+//        """.stripMargin
+//
+//      decode[Section](section) must beRight(
+//        Section(
+//          "title",
+//          List(
+//            SectionItem.dated("Yesterday - Tomorrow", "My best experience", SimpleSectionDescription("This is the section description")),
+//            SectionItem.simple("My best experience", ElementSectionDescription(<h1>{"I am description!"}</h1>))
+//          )
+//        )
+//      )
+//    }
 
     "correctly parse a complete cv" in {
       val cv =
