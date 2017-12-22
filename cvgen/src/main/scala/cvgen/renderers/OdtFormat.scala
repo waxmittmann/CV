@@ -2,7 +2,7 @@ package cvgen.renderers
 
 object OdtFormat {
   sealed trait FontSize { val textStyle: String }
-  case object Small extends FontSize { val textStyle = "T4"}
+  case object Small extends FontSize { val textStyle = "T3"}
   case object Normal extends FontSize { val textStyle = "L1" }
 
   def listHeader(id: Long) =
