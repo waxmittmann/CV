@@ -8,6 +8,8 @@ import cvgen.{CV, CVRender, StatefulCVRender}
 import org.apache.poi.wp.usermodel.Paragraph
 import org.odftoolkit.simple.TextDocument
 import org.odftoolkit.simple.text.list.{ List => OdtList }
+
+import scala.collection.JavaConverters._
 //class WordDocument protected(
 //    val curParagraph: Option[Paragraph] = None
 //) {
@@ -25,19 +27,23 @@ import org.odftoolkit.simple.text.list.{ List => OdtList }
 
 
 class WordRenderer extends StatefulCVRender {
-  def render(cv: CV) = cvRenderer.render(cv, WordRendererState(None, None))._1
+  def render(cv: CV) = cvRenderer.render(cv, WordRendererState())._1
 
   //  override lazy type OUT = WordDocument
 
   case class WordRendererState private(
-    curList: Option[OdtList],
-    curParagraph: Option[Paragraph]
+    document: TextDocument = TextDocument.newTextDocument(),
+    curList: Option[OdtList] = None,
+    curParagraph: Option[Paragraph] = None
   ) {
+
+    println("Text styles:\n")
+    println(document.getDocumentStyles.getTextStyles.asScala.map(_.toString))
+    println("Done...")
+
     def finishList: WordRendererState = this.copy(curList = None)
 
-    val document: TextDocument = TextDocument.newTextDocument()
-
-    def addList = this.copy(curList = Some(document.addList()))
+    def addList = this.copy(curList = Some(document.addList().setDecorator()))
 
     def write(outpath: String): Unit = {
       document.save(outpath)
@@ -53,7 +59,7 @@ class WordRenderer extends StatefulCVRender {
 
   override lazy implicit val sectionRenderer: OutRenderer[CV.Section] =
     (value: CV.Section, state: WordRendererState) => {
-      state.document.addParagraph(value.title)
+      state.document.addParagraph(value.title).getOdfElement.setStyleName("Heading_20_1")
       value.items.foreach(i => sectionItemRenderer.render(i, state))
 //      document.createvalue.title
       (state, ())
@@ -61,8 +67,8 @@ class WordRenderer extends StatefulCVRender {
 
   override lazy implicit val sectionItemRenderer: OutRenderer[CV.SectionItem] =
     (value: CV.SectionItem, state: WordRendererState) => {
-      state.document.addParagraph(value.title)
-      value.dateSpan.foreach(state.document.addParagraph)
+      state.document.addParagraph(value.title).getOdfElement.setStyleName("Heading_20_2")
+      value.dateSpan.foreach(v => state.document.addParagraph(v).getOdfElement.setStyleName("Heading_20_3"))
       sectionDescriptionRenderer.render(value.description, state)
     }
 
@@ -162,8 +168,10 @@ class WordRenderer extends StatefulCVRender {
 
     override def render(cvData: CV, state: WordRendererState) = {
 
-      state.document.addParagraph("Maximilian Wittmann, PhD")
+      state.document.addParagraph("Maximilian Wittmann, PhD").getOdfElement.setStyleName("Title")
 
+
+////      state.document.addParagraph("").set
       val s1 = state.addList
       s1.curList.get.addItem("Doctor of Computer Science")
       s1.curList.get.addItem("Bachelor of Computer Science with First Class Honors")
