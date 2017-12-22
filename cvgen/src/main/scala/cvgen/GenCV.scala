@@ -21,7 +21,7 @@ object GenCV {
       // Render word
       val wordCv = new WordRenderer()
       val renderedDoc = wordCv.render(cv)
-      renderedDoc.write("../CV.odt")
+      renderedDoc.write("./src/assets/OdtTemplate/content.xml")
 
       println(cv)
       cv.render[Elem]

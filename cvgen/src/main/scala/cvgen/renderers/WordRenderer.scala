@@ -1,5 +1,7 @@
 package cvgen.renderers
 
+import java.io.{File, FileOutputStream}
+
 import cvgen.CV._
 import cvgen.renderers.ElemRenderer.XmlRenderer
 import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy
@@ -7,7 +9,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument
 import cvgen.{CV, CVRender, StatefulCVRender}
 import org.apache.poi.wp.usermodel.Paragraph
 import org.odftoolkit.simple.TextDocument
-import org.odftoolkit.simple.text.list.{ List => OdtList }
+import org.odftoolkit.simple.text.list.{List => OdtList}
 
 import scala.collection.JavaConverters._
 //class WordDocument protected(
@@ -31,22 +33,44 @@ class WordRenderer extends StatefulCVRender {
 
   //  override lazy type OUT = WordDocument
 
-  case class WordRendererState private(
-    document: TextDocument = TextDocument.newTextDocument(),
-    curList: Option[OdtList] = None,
-    curParagraph: Option[Paragraph] = None
-  ) {
+  case class WordRendererState private() {
+    def title(str: String) = content.append(OdtFormat.title(str))
+    def subtitle(str: String) = content.append(OdtFormat.subtitle(str))
 
-    println("Text styles:\n")
-    println(document.getDocumentStyles.getTextStyles.asScala.map(_.toString))
-    println("Done...")
+    def header = content.append(OdtFormat.header)
+    def contentHeader = content.append(OdtFormat.contentHeader)
 
-    def finishList: WordRendererState = this.copy(curList = None)
+    def footer = content.append(OdtFormat.footer)
+    def contentFooter = content.append(OdtFormat.contentFooter)
 
-    def addList = this.copy(curList = Some(document.addList().setDecorator()))
+    private val content = new StringBuilder()
+
+//    def list(contentsFn: => String): WordRendererState = {
+//      content.append(OdtFormat.)
+//
+//      content.append(OdtFormat.listHeader)
+//      content.append(contentsFn)
+//      content.append(OdtFormat.listFooter)
+//    }
+//
+
+    // Don't use
+//    def append(str: String): Unit = content.append(OdtFormat.escapeXml(str))
+
+    def heading1(str: String): Unit = content.append(OdtFormat.heading1(str))
+    def heading2(str: String): Unit = content.append(OdtFormat.heading2(str))
+
+    def textParagraph(str: String): Unit = content.append(OdtFormat.textParagraph(str))
+
+    def listItem(str: String): Unit = content.append(OdtFormat.listItem(str))
+
+    def listHeader(i: Int) = content.append(OdtFormat.listHeader(0))
+
+    def listFooter = content.append(OdtFormat.listFooter)
 
     def write(outpath: String): Unit = {
-      document.save(outpath)
+      val fos = new FileOutputStream(new File(outpath))
+      fos.write(content.toString().getBytes)
     }
   }
 
@@ -59,16 +83,15 @@ class WordRenderer extends StatefulCVRender {
 
   override lazy implicit val sectionRenderer: OutRenderer[CV.Section] =
     (value: CV.Section, state: WordRendererState) => {
-      state.document.addParagraph(value.title).getOdfElement.setStyleName("Heading_20_1")
+      state.heading1(value.title)
       value.items.foreach(i => sectionItemRenderer.render(i, state))
-//      document.createvalue.title
       (state, ())
     }
 
   override lazy implicit val sectionItemRenderer: OutRenderer[CV.SectionItem] =
     (value: CV.SectionItem, state: WordRendererState) => {
-      state.document.addParagraph(value.title).getOdfElement.setStyleName("Heading_20_2")
-      value.dateSpan.foreach(v => state.document.addParagraph(v).getOdfElement.setStyleName("Heading_20_3"))
+      state.heading2(value.title)
+      value.dateSpan.foreach(v => state.heading2(v))
       sectionDescriptionRenderer.render(value.description, state)
     }
 
@@ -81,7 +104,7 @@ class WordRenderer extends StatefulCVRender {
 
   override lazy implicit val simpleSectionDescriptionRenderer: OutRenderer[CV.SimpleSectionDescription] =
     (value: SimpleSectionDescription, state: WordRendererState) => {
-      state.document.addParagraph(value.title)
+      state.textParagraph(value.title)
       (state, ())
     }
 
@@ -96,17 +119,17 @@ class WordRenderer extends StatefulCVRender {
 
   override lazy implicit val subsectionRenderer: OutRenderer[CV.Subsection] =
     (value: Subsection, state: WordRendererState) => {
-      state.document.addParagraph(value.title)
-      state.document.addParagraph(value.description)
+      state.textParagraph(value.title)
+      state.textParagraph(value.description)
       (state, ())
     }
 
   override lazy implicit val withSubsectionsSectionDescriptionRenderer: OutRenderer[CV.WithSubsectionsSectionDescription] =
     (value: WithSubsectionsSectionDescription, state: WordRendererState) => {
-      state.document.addParagraph(value.title)
+      state.textParagraph(value.title)
       value.subsections.foreach { subsection =>
-        state.document.addParagraph(subsection.title)
-        state.document.addParagraph(subsection.description)
+        state.textParagraph(subsection.title)
+        state.textParagraph(subsection.description)
       }
       (state, ())
     }
@@ -132,7 +155,7 @@ class WordRenderer extends StatefulCVRender {
 
   override lazy implicit val textDivRenderer: OutRenderer[CV.TextDiv] =
     (value: TextDiv, state: WordRendererState) => {
-      state.document.addParagraph(value.text)
+      state.textParagraph(value.text)
       (state, ())
     }
 
@@ -144,23 +167,24 @@ class WordRenderer extends StatefulCVRender {
 
   override lazy implicit val elemListItemRenderer: OutRenderer[CV.ElementListItem] =
     (value: ElementListItem, state: WordRendererState) => {
-      elementRenderer.render(value.elem, state.addList)
+      elementRenderer.render(value.elem, state)
     }
 
   override lazy implicit val textListItemRenderer: OutRenderer[CV.TextListItem] =
     (value: TextListItem, state: WordRendererState) => {
       println(s"Rendering list item ${value.text}")
-      state.curList.get.addItem(value.text)
+      state.listItem(value.text)
       //state.document.addParagraph(value.text)
       (state, ())
     }
 
   override lazy implicit val jlistRenderer: OutRenderer[CV.JList] =
     (value: JList, state: WordRendererState) => {
-      val stateWithList = state.addList
-      println("Rendering jlist")
-      value.items.foreach(e => listItemRenderer.render(e, stateWithList))
-      (stateWithList.finishList, ())
+      state.listHeader(0)
+//      state.append(OdtFormat.listHeader(0))
+      value.items.foreach(e => listItemRenderer.render(e, state))
+      state.listFooter
+      (state, ())
     }
 
   implicit val cvRenderer: OutRenderer[CV] = new OutRenderer[CV] {
@@ -168,24 +192,44 @@ class WordRenderer extends StatefulCVRender {
 
     override def render(cvData: CV, state: WordRendererState) = {
 
-      state.document.addParagraph("Maximilian Wittmann, PhD").getOdfElement.setStyleName("Title")
+      state.header
+      state.contentHeader
+//      state.append(OdtFormat.header)
+//      state.append(OdtFormat.contentHeader)
+
+      state.title("Maximilian Wittmann, PhD")
+//      state.append(OdtFormat.title("Maximilian Wittmann, PhD"))
+      //state.document.addParagraph("Maximilian Wittmann, PhD").getOdfElement.setStyleName("Title")
 
 
 ////      state.document.addParagraph("").set
-      val s1 = state.addList
-      s1.curList.get.addItem("Doctor of Computer Science")
-      s1.curList.get.addItem("Bachelor of Computer Science with First Class Honors")
 
-      cvData.blurb.map(s1.document.addParagraph)
+      state.listHeader(0)
+//      state.append(OdtFormat.listHeader(0))
 
-      s1.document.addParagraph("""The best way to reach me is at <a href="mailto:damxam@gmail.com?Subject=Your%20CV" target="_top">damxam@gmail.com</a>, or through <a href="http://au.linkedin.com/in/maximilianwittmann">LinkedIn</a>.</div>""")
+      state.subtitle("Doctor of Computer Science")
+      state.subtitle("Bachelor of Computer Science with First Class Honors")
 
+//      state.append(OdtFormat.subtitle("Doctor of Computer Science"))
+//      state.append(OdtFormat.subtitle("Bachelor of Computer Science with First Class Honors"))
+//      state.append(OdtFormat.listFooter)
 
-      val s2 = renderer.render(cvData.experience, s1)._1
-      val s3 = renderer.render(cvData.education, s2)._1
-      val s4 = renderer.render(cvData.skills, s3)._1
+      state.listFooter
 
-      s4.document.addParagraph("""<div class="footer">You can also check out my <a href="https://github.com/waxmittmann">GitHub account</a> to see what kind of things I've been playing with.</div>""")
+      // Todo
+//      cvData.blurb.map(s1.document.addParagraph)
+
+      // Todo: This correctly, also escape xml
+      state.textParagraph("""The best way to reach me is at <a href="mailto:damxam@gmail.com?Subject=Your%20CV" target="_top">damxam@gmail.com</a>, or through <a href="http://au.linkedin.com/in/maximilianwittmann">LinkedIn</a>.</div>""")
+
+      val s2 = renderer.render(cvData.experience, state)._1
+      val s3 = renderer.render(cvData.education, state)._1
+      val s4 = renderer.render(cvData.skills, state)._1
+
+      state.textParagraph("""<div class="footer">You can also check out my <a href="https://github.com/waxmittmann">GitHub account</a> to see what kind of things I've been playing with.</div>""")
+
+      state.contentFooter
+      state.footer
       (s4, ())
     }
   }
