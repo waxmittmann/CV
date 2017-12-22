@@ -1,42 +1,15 @@
 package cvgen.renderers
 
 import java.io.{File, FileOutputStream}
+import scala.collection.JavaConverters._
 
 import cvgen.CV._
-import cvgen.renderers.ElemRenderer.XmlRenderer
 import cvgen.renderers.OdtFormat.{FontSize, Normal, Small}
-import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy
-import org.apache.poi.xwpf.usermodel.XWPFDocument
-import cvgen.{CV, CVRender, StatefulCVRender}
-import org.apache.poi.wp.usermodel.Paragraph
-import org.odftoolkit.simple.TextDocument
-import org.odftoolkit.simple.text.list.{List => OdtList}
-
-import scala.collection.JavaConverters._
-//class WordDocument protected(
-//    val curParagraph: Option[Paragraph] = None
-//) {
-//  val document: XWPFDocument = new XWPFDocument()
-//
-//  def newParagraph: WordDocument = copy(curParagraph = Some(document.createParagraph()))
-//
-//  def completeParagraph: WordDocument = copy(curParagraph = None)
-//
-//  def copy(
-//    curParagraph: Option[Paragraph] = curParagraph
-//  ): WordDocument =
-//    new WordDocument(curParagraph)
-//}
-
+import cvgen.{CV, StatefulCVRender}
 
 class OdtRenderer extends StatefulCVRender {
-  def render(cv: CV) = cvRenderer.render(cv, WordRendererState())._1
-
-  //  override lazy type OUT = WordDocument
-
   case class WordRendererState private() {
-//    def lineBreak = content.append(OdtFormat.lineBreak)
-//    def lineBreak2 = content.append(OdtFormat.lineBreak2)
+    private val content = new StringBuilder()
 
     // Todo: Should temp buffer and only write on finish
     class TextBuilder(fontSize: FontSize = Normal) {
@@ -53,46 +26,24 @@ class OdtRenderer extends StatefulCVRender {
       def finish(): Unit = content.append(OdtFormat.endParagraph)
     }
 
+    def styles(): Unit = content.append(OdtFormat.styles)
+    def header(): Unit = content.append(OdtFormat.header)
+    def contentHeader(): Unit = content.append(OdtFormat.contentHeader)
+    def footer(): Unit = content.append(OdtFormat.footer)
+    def contentFooter(): Unit = content.append(OdtFormat.contentFooter)
+
+    def title(str: String): Unit = content.append(OdtFormat.title(str))
+    def subtitle(str: String): Unit = content.append(OdtFormat.subtitle(str))
+    def heading1(str: String): Unit = content.append(OdtFormat.heading1(str))
+    def heading2(str: String): Unit = content.append(OdtFormat.heading2(str))
+    def textParagraph(str: String): Unit = content.append(OdtFormat.textParagraph(str))
+    def listItem(str: String): Unit = content.append(OdtFormat.listItem(str))
+    def listHeader(i: Int): Unit = content.append(OdtFormat.listHeader(0))
+    def listFooter(): Unit = content.append(OdtFormat.listFooter)
     def text(fontSize: FontSize = Normal): TextBuilder = {
       content.append(OdtFormat.startParagraph(fontSize))
       new TextBuilder(fontSize)
     }
-
-    def styles = content.append(OdtFormat.styles)
-
-    def title(str: String) = content.append(OdtFormat.title(str))
-    def subtitle(str: String) = content.append(OdtFormat.subtitle(str))
-
-    def header = content.append(OdtFormat.header)
-    def contentHeader = content.append(OdtFormat.contentHeader)
-
-    def footer = content.append(OdtFormat.footer)
-    def contentFooter = content.append(OdtFormat.contentFooter)
-
-    private val content = new StringBuilder()
-
-//    def list(contentsFn: => String): WordRendererState = {
-//      content.append(OdtFormat.)
-//
-//      content.append(OdtFormat.listHeader)
-//      content.append(contentsFn)
-//      content.append(OdtFormat.listFooter)
-//    }
-//
-
-    // Don't use
-//    def append(str: String): Unit = content.append(OdtFormat.escapeXml(str))
-
-    def heading1(str: String): Unit = content.append(OdtFormat.heading1(str))
-    def heading2(str: String): Unit = content.append(OdtFormat.heading2(str))
-
-    def textParagraph(str: String): Unit = content.append(OdtFormat.textParagraph(str))
-
-    def listItem(str: String): Unit = content.append(OdtFormat.listItem(str))
-
-    def listHeader(i: Int) = content.append(OdtFormat.listHeader(0))
-
-    def listFooter = content.append(OdtFormat.listFooter)
 
     def write(outpath: String): Unit = {
       val fos = new FileOutputStream(new File(outpath))
@@ -102,10 +53,6 @@ class OdtRenderer extends StatefulCVRender {
 
   override type STATE = WordRendererState
   override type OUT = Unit
-
-//  val document: XWPFDocument = new XWPFDocument()
-
-    //document.addList()
 
   override lazy implicit val sectionRenderer: OutRenderer[CV.Section] =
     (value: CV.Section, state: WordRendererState) => {
@@ -207,13 +154,9 @@ class OdtRenderer extends StatefulCVRender {
   override lazy implicit val jlistRenderer: OutRenderer[CV.JList] =
     (value: JList, state: WordRendererState) => {
       state.listHeader(0)
-//      state.append(OdtFormat.listHeader(0))
       value.items.foreach(e => listItemRenderer.render(e, state))
       state.listFooter
-//      state.lineBreak2
-//      state.lineBreak
       state.textParagraph("")
-//      state.lineBreak
       (state, ())
     }
 
@@ -225,33 +168,15 @@ class OdtRenderer extends StatefulCVRender {
       state.header
       state.styles
       state.contentHeader
-//      state.append(OdtFormat.header)
-//      state.append(OdtFormat.contentHeader)
 
       state.title("Maximilian Wittmann, PhD")
-//      state.append(OdtFormat.title("Maximilian Wittmann, PhD"))
-      //state.document.addParagraph("Maximilian Wittmann, PhD").getOdfElement.setStyleName("Title")
-
-
-////      state.document.addParagraph("").set
-
-//      state.listHeader(0)
-//      state.append(OdtFormat.listHeader(0))
 
       state.subtitle("Doctor of Computer Science")
       state.subtitle("Bachelor of Computer Science with First Class Honors")
 
-//      state.append(OdtFormat.subtitle("Doctor of Computer Science"))
-//      state.append(OdtFormat.subtitle("Bachelor of Computer Science with First Class Honors"))
-//      state.append(OdtFormat.listFooter)
-
-//      state.listFooter
-
       // Todo
 //      cvData.blurb.map(s1.document.addParagraph)
 
-      // Todo: This correctly, also escape xml
-      //state.textParagraph("""The best way to reach me is at <a href="mailto:damxam@gmail.com?Subject=Your%20CV" target="_top">damxam@gmail.com</a>, or through <a href="http://au.linkedin.com/in/maximilianwittmann">LinkedIn</a>.</div>""")
       state
         .text(Small)
         .plain("The best way to reach me is at ")
@@ -261,9 +186,9 @@ class OdtRenderer extends StatefulCVRender {
         .finish()
 
 
-      val s2 = renderer.render(cvData.experience, state)._1
-      val s3 = renderer.render(cvData.education, state)._1
-      val s4 = renderer.render(cvData.skills, state)._1
+      renderer.render(cvData.experience, state)._1
+      renderer.render(cvData.education, state)._1
+      renderer.render(cvData.skills, state)._1
 
       state
         .text(Small)
@@ -274,11 +199,9 @@ class OdtRenderer extends StatefulCVRender {
 
       state.contentFooter
       state.footer
-      (s4, ())
+      (state, ())
     }
   }
 
-//  def write(outpath: String): Unit = {
-//    document.save(outpath)
-//  }
+  def render(cv: CV): WordRendererState = cvRenderer.render(cv, WordRendererState())._1
 }
