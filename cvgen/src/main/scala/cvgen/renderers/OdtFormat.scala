@@ -64,5 +64,8 @@ object OdtFormat {
   def heading2(text: String) =
     s"""<text:h text:style-name="Heading_20_2" text:outline-level="2"><text:span text:style-name="T7">${escapeXml(text)}</text:span><text:span text:style-name="T1"></text:span></text:h>"""
 
+  def sectionHeading(date: String, title: String) =
+    s"""<text:p text:style-name="P1"><text:soft-page-break/><text:span text:style-name="T5">&gt; $date<text:line-break/></text:span><text:span text:style-name="T5">$title</text:span></text:p>"""
+
   def escapeXml(str: String): String = xml.Utility.escape(str)
 }

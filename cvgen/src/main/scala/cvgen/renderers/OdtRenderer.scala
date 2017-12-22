@@ -40,6 +40,7 @@ class OdtRenderer extends StatefulCVRender {
     def listItem(str: String): Unit = content.append(OdtFormat.listItem(str))
     def listHeader(i: Int): Unit = content.append(OdtFormat.listHeader(0))
     def listFooter(): Unit = content.append(OdtFormat.listFooter)
+    def sectionHeading(date: String, title: String): Unit = content.append(OdtFormat.sectionHeading(date, title))
     def text(fontSize: FontSize = Normal): TextBuilder = {
       content.append(OdtFormat.startParagraph(fontSize))
       new TextBuilder(fontSize)
@@ -63,8 +64,12 @@ class OdtRenderer extends StatefulCVRender {
 
   override lazy implicit val sectionItemRenderer: OutRenderer[CV.SectionItem] =
     (value: CV.SectionItem, state: WordRendererState) => {
-      state.heading2(value.title)
-      value.dateSpan.foreach(v => state.heading2(v))
+      value.dateSpan.map { ds =>
+        state.sectionHeading(ds, value.title)
+      }.getOrElse(state.heading2(value.title))
+
+//      state.heading2(value.title)
+//      value.dateSpan.foreach(v => state.heading2(v))
       sectionDescriptionRenderer.render(value.description, state)
     }
 
@@ -145,7 +150,6 @@ class OdtRenderer extends StatefulCVRender {
 
   override lazy implicit val textListItemRenderer: OutRenderer[CV.TextListItem] =
     (value: TextListItem, state: WordRendererState) => {
-      println(s"Rendering list item ${value.text}")
       state.listItem(value.text)
       //state.document.addParagraph(value.text)
       (state, ())
