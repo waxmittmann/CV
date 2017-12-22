@@ -7,7 +7,7 @@ import cvgen.CV._
 import cvgen.RenderCV._
 import cvgen.parser.JsonParser
 import cvgen.renderers.ElemRenderer._
-import cvgen.renderers.WordRenderer
+import cvgen.renderers.OdtRenderer
 import io.circe
 
 object GenCV {
@@ -19,7 +19,7 @@ object GenCV {
     } yield {
 
       // Render word
-      val wordCv = new WordRenderer()
+      val wordCv = new OdtRenderer()
       val renderedDoc = wordCv.render(cv)
       renderedDoc.write("./src/assets/OdtTemplate/content.xml")
 

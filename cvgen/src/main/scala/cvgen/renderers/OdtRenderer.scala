@@ -4,6 +4,7 @@ import java.io.{File, FileOutputStream}
 
 import cvgen.CV._
 import cvgen.renderers.ElemRenderer.XmlRenderer
+import cvgen.renderers.OdtFormat.{FontSize, Normal, Small}
 import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy
 import org.apache.poi.xwpf.usermodel.XWPFDocument
 import cvgen.{CV, CVRender, StatefulCVRender}
@@ -28,12 +29,37 @@ import scala.collection.JavaConverters._
 //}
 
 
-class WordRenderer extends StatefulCVRender {
+class OdtRenderer extends StatefulCVRender {
   def render(cv: CV) = cvRenderer.render(cv, WordRendererState())._1
 
   //  override lazy type OUT = WordDocument
 
   case class WordRendererState private() {
+//    def lineBreak = content.append(OdtFormat.lineBreak)
+//    def lineBreak2 = content.append(OdtFormat.lineBreak2)
+
+    // Todo: Should temp buffer and only write on finish
+    class TextBuilder(fontSize: FontSize = Normal) {
+      def plain(text: String): TextBuilder = {
+        content.append(text)
+        this
+      }
+
+      def link(url: String, text: String): TextBuilder = {
+        content.append(OdtFormat.hyperlink(text, url, fontSize))
+        this
+      }
+
+      def finish(): Unit = content.append(OdtFormat.endParagraph)
+    }
+
+    def text(fontSize: FontSize = Normal): TextBuilder = {
+      content.append(OdtFormat.startParagraph(fontSize))
+      new TextBuilder(fontSize)
+    }
+
+    def styles = content.append(OdtFormat.styles)
+
     def title(str: String) = content.append(OdtFormat.title(str))
     def subtitle(str: String) = content.append(OdtFormat.subtitle(str))
 
@@ -184,6 +210,10 @@ class WordRenderer extends StatefulCVRender {
 //      state.append(OdtFormat.listHeader(0))
       value.items.foreach(e => listItemRenderer.render(e, state))
       state.listFooter
+//      state.lineBreak2
+//      state.lineBreak
+      state.textParagraph("")
+//      state.lineBreak
       (state, ())
     }
 
@@ -193,6 +223,7 @@ class WordRenderer extends StatefulCVRender {
     override def render(cvData: CV, state: WordRendererState) = {
 
       state.header
+      state.styles
       state.contentHeader
 //      state.append(OdtFormat.header)
 //      state.append(OdtFormat.contentHeader)
@@ -204,7 +235,7 @@ class WordRenderer extends StatefulCVRender {
 
 ////      state.document.addParagraph("").set
 
-      state.listHeader(0)
+//      state.listHeader(0)
 //      state.append(OdtFormat.listHeader(0))
 
       state.subtitle("Doctor of Computer Science")
@@ -214,19 +245,32 @@ class WordRenderer extends StatefulCVRender {
 //      state.append(OdtFormat.subtitle("Bachelor of Computer Science with First Class Honors"))
 //      state.append(OdtFormat.listFooter)
 
-      state.listFooter
+//      state.listFooter
 
       // Todo
 //      cvData.blurb.map(s1.document.addParagraph)
 
       // Todo: This correctly, also escape xml
-      state.textParagraph("""The best way to reach me is at <a href="mailto:damxam@gmail.com?Subject=Your%20CV" target="_top">damxam@gmail.com</a>, or through <a href="http://au.linkedin.com/in/maximilianwittmann">LinkedIn</a>.</div>""")
+      //state.textParagraph("""The best way to reach me is at <a href="mailto:damxam@gmail.com?Subject=Your%20CV" target="_top">damxam@gmail.com</a>, or through <a href="http://au.linkedin.com/in/maximilianwittmann">LinkedIn</a>.</div>""")
+      state
+        .text(Small)
+        .plain("The best way to reach me is at ")
+        .link("mailto:damxam@gmail.com?Subject=Your%20CV", "damxam@gmail.com")
+        .plain(", or through ")
+        .link("http://au.linkedin.com/in/maximilianwittmann", "LinkedIn")
+        .finish()
+
 
       val s2 = renderer.render(cvData.experience, state)._1
       val s3 = renderer.render(cvData.education, state)._1
       val s4 = renderer.render(cvData.skills, state)._1
 
-      state.textParagraph("""<div class="footer">You can also check out my <a href="https://github.com/waxmittmann">GitHub account</a> to see what kind of things I've been playing with.</div>""")
+      state
+        .text(Small)
+        .plain("You can also check out my ")
+        .link("https://github.com/waxmittmann", "GitHub account")
+        .plain(" to see what kind of things I've been playing with.")
+        .finish()
 
       state.contentFooter
       state.footer
