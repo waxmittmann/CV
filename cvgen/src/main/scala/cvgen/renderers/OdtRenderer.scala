@@ -67,9 +67,6 @@ class OdtRenderer extends StatefulCVRender {
       value.dateSpan.map { ds =>
         state.sectionHeading(ds, value.title)
       }.getOrElse(state.heading2(value.title))
-
-//      state.heading2(value.title)
-//      value.dateSpan.foreach(v => state.heading2(v))
       sectionDescriptionRenderer.render(value.description, state)
     }
 
